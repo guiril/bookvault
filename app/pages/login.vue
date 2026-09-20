@@ -1,12 +1,52 @@
 <script setup lang="ts">
+const authErrorMessages: Record<string, string> = {
+  weak_password: '密碼需至少 8 碼，並包含英文字母與數字',
+  user_already_exists: '這個信箱已經註冊，請直接登入',
+  email_address_invalid: '信箱格式不正確',
+  email_provider_disabled: '目前暫停開放註冊，請稍後再試',
+  signup_disabled: '目前暫停開放註冊，請稍後再試',
+  invalid_credentials: '帳號或密碼不正確',
+};
+
+const translateAuthError = (error: { code?: string; message: string }) => {
+  if (!error.code) {
+    return error.message;
+  }
+  return authErrorMessages[error.code] ?? error.message;
+};
+
 const supabase = useSupabaseClient();
 
 const email = ref('');
 const password = ref('');
 const errorMessage = ref('');
+const isRegisterMode = ref(false);
+const showPassword = ref(false);
 
-const handleLogin = async () => {
+const toggleMode = () => {
+  isRegisterMode.value = !isRegisterMode.value;
   errorMessage.value = '';
+  email.value = '';
+  password.value = '';
+};
+
+const handleSubmit = async () => {
+  errorMessage.value = '';
+
+  if (isRegisterMode.value) {
+    const { error } = await supabase.auth.signUp({
+      email: email.value,
+      password: password.value,
+    });
+
+    if (error) {
+      errorMessage.value = translateAuthError(error);
+      return;
+    }
+
+    await navigateTo('/my-books');
+    return;
+  }
 
   const { error } = await supabase.auth.signInWithPassword({
     email: email.value,
@@ -14,7 +54,7 @@ const handleLogin = async () => {
   });
 
   if (error) {
-    errorMessage.value = error.message;
+    errorMessage.value = translateAuthError(error);
     return;
   }
 
@@ -32,10 +72,10 @@ const handleLogin = async () => {
     <div class="flex flex-1 items-center justify-center px-6">
       <form
         class="flex w-full max-w-sm flex-col gap-4 rounded-lg border border-line bg-surface p-8 shadow-sm"
-        @submit.prevent="handleLogin"
+        @submit.prevent="handleSubmit"
       >
         <h1 class="font-display text-2xl font-bold text-ink text-center">
-          登入
+          {{ isRegisterMode ? '建立帳號' : '登入' }}
         </h1>
         <div class="flex flex-col gap-1">
           <label for="email" class="text-sm font-medium text-ink">Email</label>
@@ -51,13 +91,30 @@ const handleLogin = async () => {
           <label for="password" class="text-sm font-medium text-ink">
             密碼
           </label>
-          <input
-            id="password"
-            v-model="password"
-            type="password"
-            required
-            class="rounded-md border border-line px-3 py-2 text-ink focus:border-primary focus:outline-none"
-          />
+          <div class="relative">
+            <input
+              id="password"
+              v-model="password"
+              :type="showPassword ? 'text' : 'password'"
+              required
+              :minlength="isRegisterMode ? 8 : undefined"
+              class="w-full rounded-md border border-line px-3 py-2 pr-10 text-ink focus:border-primary focus:outline-none"
+            />
+            <button
+              type="button"
+              :aria-label="showPassword ? '隱藏密碼' : '顯示密碼'"
+              :title="showPassword ? '隱藏密碼' : '顯示密碼'"
+              class="absolute inset-y-0 right-0 flex cursor-pointer items-center px-3 text-ink-soft hover:text-primary"
+              @click="showPassword = !showPassword"
+            >
+              <span class="material-symbols-outlined" aria-hidden="true">
+                {{ showPassword ? 'visibility_off' : 'visibility' }}
+              </span>
+            </button>
+          </div>
+          <p v-if="isRegisterMode" class="text-xs text-ink-soft">
+            至少 8 碼，需包含英文字母與數字
+          </p>
         </div>
         <p v-if="errorMessage" class="text-sm text-red-600">
           {{ errorMessage }}
@@ -66,7 +123,14 @@ const handleLogin = async () => {
           type="submit"
           class="cursor-pointer rounded-md bg-primary py-2.5 font-display font-semibold text-white transition-colors hover:bg-primary-hover"
         >
-          登入
+          {{ isRegisterMode ? '建立帳號' : '登入' }}
+        </button>
+        <button
+          type="button"
+          class="cursor-pointer text-sm text-ink-soft hover:text-primary"
+          @click="toggleMode"
+        >
+          {{ isRegisterMode ? '已經有帳號？直接登入' : '還沒有帳號？建立帳號' }}
         </button>
       </form>
     </div>
