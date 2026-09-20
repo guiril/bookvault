@@ -23,32 +23,32 @@ const handleLogin = async () => {
 </script>
 
 <template>
-  <div class="flex min-h-screen items-center justify-center bg-slate-50 px-6">
+  <div class="flex min-h-screen items-center justify-center bg-bg px-6">
     <form
-      class="flex w-full max-w-sm flex-col gap-4 rounded-xl border border-slate-200 bg-white p-8 shadow-sm"
+      class="flex w-full max-w-sm flex-col gap-4 rounded-lg border border-line bg-surface p-8 shadow-sm"
       @submit.prevent="handleLogin"
     >
-      <h1 class="text-2xl font-bold text-slate-900">登入</h1>
+      <h1 class="font-display text-2xl font-bold text-ink">登入</h1>
 
       <div class="flex flex-col gap-1">
-        <label for="email" class="text-sm font-medium text-slate-700">Email</label>
+        <label for="email" class="text-sm font-medium text-ink">Email</label>
         <input
           id="email"
           v-model="email"
           type="email"
           required
-          class="rounded-lg border border-slate-300 px-3 py-2 text-slate-900 focus:border-slate-500 focus:outline-none"
+          class="rounded-md border border-line px-3 py-2 text-ink focus:border-primary focus:outline-none"
         />
       </div>
 
       <div class="flex flex-col gap-1">
-        <label for="password" class="text-sm font-medium text-slate-700">密碼</label>
+        <label for="password" class="text-sm font-medium text-ink">密碼</label>
         <input
           id="password"
           v-model="password"
           type="password"
           required
-          class="rounded-lg border border-slate-300 px-3 py-2 text-slate-900 focus:border-slate-500 focus:outline-none"
+          class="rounded-md border border-line px-3 py-2 text-ink focus:border-primary focus:outline-none"
         />
       </div>
 
@@ -56,7 +56,7 @@ const handleLogin = async () => {
 
       <button
         type="submit"
-        class="rounded-lg bg-slate-900 py-2.5 font-medium text-white transition hover:bg-slate-700"
+        class="rounded-md bg-primary py-2.5 font-display font-semibold text-white transition hover:opacity-90"
       >
         登入
       </button>
