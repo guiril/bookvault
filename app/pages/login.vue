@@ -6,6 +6,7 @@ const authErrorMessages: Record<string, string> = {
   email_provider_disabled: '目前暫停開放註冊，請稍後再試',
   signup_disabled: '目前暫停開放註冊，請稍後再試',
   invalid_credentials: '帳號或密碼不正確',
+  anonymous_provider_disabled: '目前暫停開放訪客模式，請稍後再試',
 };
 
 const translateAuthError = (error: { code?: string; message: string }) => {
@@ -52,6 +53,19 @@ const handleSubmit = async () => {
     email: email.value,
     password: password.value,
   });
+
+  if (error) {
+    errorMessage.value = translateAuthError(error);
+    return;
+  }
+
+  await navigateTo('/my-books');
+};
+
+const handleGuestLogin = async () => {
+  errorMessage.value = '';
+
+  const { error } = await supabase.auth.signInAnonymously();
 
   if (error) {
     errorMessage.value = translateAuthError(error);
@@ -131,6 +145,18 @@ const handleSubmit = async () => {
           @click="toggleMode"
         >
           {{ isRegisterMode ? '已經有帳號？直接登入' : '還沒有帳號？建立帳號' }}
+        </button>
+        <div class="flex items-center gap-3">
+          <div class="h-px flex-1 bg-line" />
+          <span class="text-xs text-ink-soft">或</span>
+          <div class="h-px flex-1 bg-line" />
+        </div>
+        <button
+          type="button"
+          class="cursor-pointer rounded-md border border-line py-2.5 font-display font-semibold text-ink transition-colors hover:border-primary hover:text-primary"
+          @click="handleGuestLogin"
+        >
+          以訪客身分試用
         </button>
       </form>
     </div>
