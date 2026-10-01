@@ -121,9 +121,15 @@ const handleGuestLogin = async () => {
               class="absolute inset-y-0 right-0 flex cursor-pointer items-center px-3 text-ink-soft hover:text-primary"
               @click="showPassword = !showPassword"
             >
-              <span class="material-symbols-outlined" aria-hidden="true">
-                {{ showPassword ? 'visibility_off' : 'visibility' }}
-              </span>
+              <Icon
+                :name="
+                  showPassword
+                    ? 'material-symbols:visibility-off-outline'
+                    : 'material-symbols:visibility-outline'
+                "
+                class="size-5"
+                aria-hidden="true"
+              />
             </button>
           </div>
           <p v-if="isRegisterMode" class="text-xs text-ink-soft">

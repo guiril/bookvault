@@ -11,12 +11,14 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxt/icon": "^2.5.1",
     "@nuxtjs/supabase": "^2.0.10",
     "nuxt": "^4.5.2",
     "vue": "^3.5.42",
     "vue-router": "^5.3.1"
   },
   "devDependencies": {
+    "@iconify-json/material-symbols": "^1.2.93",
     "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^22.20.3",
     "prettier": "^3.9.8",
