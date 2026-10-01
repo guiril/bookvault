@@ -25,6 +25,10 @@ export interface UserBook {
   updated_at: string;
 }
 
+export interface UserBookWithBook extends UserBook {
+  book: Book;
+}
+
 export interface Note {
   id: string;
   user_book_id: string;

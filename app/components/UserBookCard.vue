@@ -1,0 +1,74 @@
+<script setup lang="ts">
+import type { UserBook, UserBookWithBook } from '~/types/database';
+
+const statusLabel: Record<UserBook['status'], string> = {
+  reading: '閱讀中',
+  finished: '已讀完',
+};
+
+const { userBook } = defineProps<{
+  userBook: UserBookWithBook;
+}>();
+
+const emit = defineEmits<{
+  'open-info': [userBookId: string];
+}>();
+</script>
+
+<template>
+  <li
+    class="flex w-full flex-col overflow-hidden rounded-lg border border-line bg-surface"
+  >
+    <img
+      v-if="userBook.book.cover_url"
+      :src="userBook.book.cover_url"
+      :alt="userBook.book.title"
+      class="aspect-2/3 w-full object-cover"
+    />
+    <div
+      v-else
+      class="flex aspect-2/3 w-full items-center justify-center bg-tag-bg text-xs text-ink-soft"
+    >
+      無封面
+    </div>
+    <div class="flex flex-col px-2 pt-1.5 pb-2.5 gap-5.5">
+      <div class="flex flex-col gap-1">
+        <span class="text-[14px] font-semibold text-ink truncate">
+          {{ userBook.book.title }}
+        </span>
+        <span class="text-[12px] text-ink-soft truncate">
+          {{ userBook.book.author || '作者不詳' }}
+        </span>
+      </div>
+      <div class="flex items-center justify-between">
+        <span
+          class="px-1.5 py-1 text-[10px] font-semibold whitespace-nowrap text-tag-ink rounded-md bg-tag-bg"
+        >
+          {{ statusLabel[userBook.status] }}
+        </span>
+        <div class="flex items-center">
+          <AppTooltip text="資訊">
+            <button
+              type="button"
+              class="group w-6 h-6 flex flex-col justify-center items-center text-ink-soft cursor-pointer transition-colors hover:text-primary"
+              aria-label="資訊"
+              @click="emit('open-info', userBook.id)"
+            >
+              <Icon name="material-symbols:info-outline" />
+            </button>
+          </AppTooltip>
+          <AppTooltip text="編輯">
+            <button
+              type="button"
+              class="group w-6 h-6 flex flex-col justify-center items-center text-ink-soft cursor-pointer transition-colors hover:text-primary"
+              aria-label="編輯"
+              disabled
+            >
+              <Icon name="material-symbols:edit-line-outline" />
+            </button>
+          </AppTooltip>
+        </div>
+      </div>
+    </div>
+  </li>
+</template>
