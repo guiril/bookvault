@@ -9,6 +9,11 @@ export interface Book {
   description: string | null;
 }
 
+// A book before it has been created, so it has no `id` yet. Nullable fields
+// use `| null` instead of `?` because the database has no `undefined`, only
+// `NULL`.
+export type NewBook = Omit<Book, 'id'>;
+
 export interface UserBook {
   id: string;
   user_id: string;
