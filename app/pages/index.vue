@@ -1,3 +1,9 @@
+<script setup lang="ts">
+definePageMeta({
+  layout: false,
+});
+</script>
+
 <template>
   <div
     class="flex min-h-screen flex-col items-center justify-center gap-4 bg-bg px-6 text-center"

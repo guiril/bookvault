@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+  layout: false,
+});
+
 const authErrorMessages: Record<string, string> = {
   weak_password: '密碼需至少 8 碼，並包含英文字母與數字',
   user_already_exists: '這個信箱已經註冊，請直接登入',
