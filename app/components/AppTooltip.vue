@@ -29,7 +29,7 @@ const {
     <slot />
     <span
       role="tooltip"
-      class="absolute z-10 rounded bg-ink px-1.5 py-0.5 text-[10px] whitespace-nowrap text-surface opacity-0 pointer-events-none transition-opacity group-hover/tooltip:opacity-100 group-focus-within/tooltip:opacity-100"
+      class="absolute z-10 rounded bg-ink px-2 py-1 text-[12px] whitespace-nowrap text-surface opacity-0 pointer-events-none transition-opacity group-hover/tooltip:opacity-100 group-focus-within/tooltip:opacity-100"
       :class="[placementClass[placement], alignClass[align]]"
     >
       {{ text }}
