@@ -121,7 +121,9 @@ const handleFormSubmit = async () => {
     <p v-if="searchErrorMessage" class="mt-4 text-sm text-red-600">
       {{ searchErrorMessage }}
     </p>
-    <p v-if="isSearching" class="mt-6 text-sm text-ink-soft">搜尋中...</p>
+    <div v-if="isSearching" class="mt-8 flex justify-center text-ink-soft">
+      <AppSpinner label="搜尋中" />
+    </div>
     <p
       v-else-if="hasSearched && searchResults.length === 0"
       class="mt-6 text-sm text-ink-soft"
