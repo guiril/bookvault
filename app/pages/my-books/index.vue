@@ -130,6 +130,6 @@ const handleToggleStatus = async (userBookId: string) => {
       @close="selectedInfoBookId = null"
       @toggle-status="handleToggleStatus"
     />
-    <Toast ref="toastRef" />
+    <AppToast ref="toastRef" />
   </div>
 </template>

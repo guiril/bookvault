@@ -166,6 +166,6 @@ const handleFormSubmit = async () => {
     <p v-if="submitErrorMessage" class="mt-4 text-sm text-red-600">
       {{ submitErrorMessage }}
     </p>
-    <Toast ref="toastRef" />
+    <AppToast ref="toastRef" />
   </div>
 </template>
