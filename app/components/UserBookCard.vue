@@ -12,6 +12,7 @@ const { userBook } = defineProps<{
 
 const emit = defineEmits<{
   'open-info': [userBookId: string];
+  'open-notes': [userBookId: string];
 }>();
 </script>
 
@@ -57,14 +58,14 @@ const emit = defineEmits<{
               <Icon name="material-symbols:info-outline" />
             </button>
           </AppTooltip>
-          <AppTooltip text="編輯">
+          <AppTooltip text="筆記">
             <button
               type="button"
               class="group w-6 h-6 flex flex-col justify-center items-center text-ink-soft cursor-pointer transition-colors hover:text-primary"
-              aria-label="編輯"
-              disabled
+              aria-label="筆記"
+              @click="emit('open-notes', userBook.id)"
             >
-              <Icon name="material-symbols:edit-line-outline" />
+              <Icon name="material-symbols:edit-note-outline" />
             </button>
           </AppTooltip>
         </div>

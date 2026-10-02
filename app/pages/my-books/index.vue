@@ -9,6 +9,7 @@ const { data: userBooks, refresh } =
   await useFetch<UserBookWithBook[]>('/api/user-books');
 
 const selectedInfoBookId = ref<string | null>(null);
+const selectedNotesBookId = ref<string | null>(null);
 
 const toastRef = useTemplateRef('toastRef');
 
@@ -44,6 +45,13 @@ const selectedInfoBook = computed(
     ) ?? null,
 );
 
+const selectedNotesBook = computed(
+  () =>
+    userBooks.value?.find(
+      (userBook) => userBook.id === selectedNotesBookId.value,
+    ) ?? null,
+);
+
 const booksForTab = (tabKey: TabKey) => {
   const books = userBooks.value ?? [];
 
@@ -54,6 +62,14 @@ const booksForTab = (tabKey: TabKey) => {
 
 const handleOpenInfo = (userBookId: string) => {
   selectedInfoBookId.value = userBookId;
+};
+
+const handleOpenNotes = (userBookId: string) => {
+  selectedNotesBookId.value = userBookId;
+};
+
+const handleNotesError = (message: string) => {
+  toastRef.value?.show(message);
 };
 
 const handleToggleStatus = async (userBookId: string) => {
@@ -116,6 +132,7 @@ const handleToggleStatus = async (userBookId: string) => {
               :key="userBook.id"
               :user-book="userBook"
               @open-info="handleOpenInfo"
+              @open-notes="handleOpenNotes"
             />
           </ul>
           <p v-else class="mt-16 text-center text-sm text-ink-soft">
@@ -129,6 +146,12 @@ const handleToggleStatus = async (userBookId: string) => {
       :user-book="selectedInfoBook"
       @close="selectedInfoBookId = null"
       @toggle-status="handleToggleStatus"
+    />
+    <BookNotesModal
+      v-if="selectedNotesBook"
+      :user-book="selectedNotesBook"
+      @close="selectedNotesBookId = null"
+      @error="handleNotesError"
     />
     <AppToast ref="toastRef" />
   </div>
