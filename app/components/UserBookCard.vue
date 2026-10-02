@@ -37,7 +37,7 @@ const emit = defineEmits<{
         <span class="text-[14px] font-semibold text-ink truncate">
           {{ userBook.book.title }}
         </span>
-        <span class="text-[12px] text-ink-soft truncate">
+        <span class="text-[12px] max-sm:text-[13px] text-ink-soft truncate">
           {{ userBook.book.author || '作者不詳' }}
         </span>
       </div>

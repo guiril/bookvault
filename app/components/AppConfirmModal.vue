@@ -30,7 +30,7 @@ const emit = defineEmits<{
 
 <template>
   <AppModal :open="open" :title="title" size="sm" @close="emit('cancel')">
-    <p class="mt-3 text-[13px] leading-[1.6] text-ink-soft">
+    <p class="mt-3 text-[13px] max-sm:text-[14px] leading-[1.6] text-ink-soft">
       {{ message }}
     </p>
     <div class="mt-5 flex justify-end gap-2">

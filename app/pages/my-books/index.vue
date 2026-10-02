@@ -97,7 +97,7 @@ const handleToggleStatus = async (userBookId: string) => {
     <div class="flex justify-end">
       <NuxtLink
         to="/my-books/new"
-        class="cursor-pointer rounded-md bg-primary px-4 py-2 font-display text-[13px] font-semibold text-white transition-colors hover:bg-primary-hover"
+        class="cursor-pointer rounded-md bg-primary px-4 py-2 font-display text-[13px] max-sm:text-[14px] font-semibold text-white transition-colors hover:bg-primary-hover"
       >
         + 新增書本
       </NuxtLink>
@@ -114,7 +114,7 @@ const handleToggleStatus = async (userBookId: string) => {
         >
           <button
             type="button"
-            class="cursor-pointer rounded-md px-3.25 py-1.5 font-display text-[12.5px] font-semibold transition-colors focus:outline-none"
+            class="cursor-pointer rounded-md px-3.25 py-1.5 font-display text-[12.5px] max-sm:text-[14px] font-semibold transition-colors focus:outline-none"
             :class="selected ? 'bg-ink text-white' : 'text-ink-soft'"
           >
             {{ tab.label }}（{{ tab.count }}）

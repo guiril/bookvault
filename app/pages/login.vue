@@ -133,7 +133,7 @@ const handleGuestLogin = async () => {
               />
             </button>
           </div>
-          <p v-if="isRegisterMode" class="text-xs text-ink-soft">
+          <p v-if="isRegisterMode" class="text-xs max-sm:text-[13px] text-ink-soft">
             至少 8 碼，需包含英文字母與數字
           </p>
         </div>

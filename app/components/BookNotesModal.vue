@@ -103,11 +103,11 @@ const handleConfirmDelete = async () => {
         ref="draftTextarea"
         v-model="draftContent"
         placeholder="寫下這本書帶給你的想法..."
-        class="min-h-17 w-full resize-y rounded-lg border border-line px-3 py-2.5 text-[13px] text-ink focus:outline-2 focus:outline-offset-1 focus:outline-primary"
+        class="min-h-17 w-full resize-y rounded-lg border border-line px-3 py-2.5 text-[16px] text-ink pointer-fine:text-[14px] focus:outline-2 focus:outline-offset-1 focus:outline-primary"
       />
       <button
         type="submit"
-        class="relative mt-2.5 cursor-pointer self-end rounded-lg bg-primary px-4 py-2.25 font-display text-[13px] font-semibold text-white transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:bg-ink-soft"
+        class="relative mt-2.5 cursor-pointer self-end rounded-lg bg-primary px-4 py-2.25 font-display text-[13px] max-sm:text-[14px] font-semibold text-white transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:bg-ink-soft"
         :disabled="!canSubmit"
         :aria-busy="isSubmitting"
       >
@@ -128,7 +128,7 @@ const handleConfirmDelete = async () => {
     </div>
     <p
       v-else-if="loadStatus === 'error'"
-      class="mt-4 text-[13px] text-ink-soft"
+      class="mt-4 text-[13px] max-sm:text-[14px] text-ink-soft"
     >
       筆記載入失敗，請關閉後再試一次
     </p>
@@ -146,7 +146,7 @@ const handleConfirmDelete = async () => {
           </p>
           <time
             :datetime="note.created_at"
-            class="mt-1.5 block text-[11px] text-ink-soft"
+            class="mt-1.5 block text-[11px] max-sm:text-[12px] text-ink-soft"
           >
             {{ formatNoteDate(note.created_at) }}
           </time>
@@ -163,7 +163,7 @@ const handleConfirmDelete = async () => {
         </AppTooltip>
       </li>
     </ul>
-    <p v-else class="mt-4 text-[13px] text-ink-soft">
+    <p v-else class="mt-4 text-[13px] max-sm:text-[14px] text-ink-soft">
       還沒有筆記，寫下第一則吧。
     </p>
     <AppConfirmModal

@@ -67,10 +67,10 @@ const emit = defineEmits<{
           >
             <div class="flex items-start justify-between gap-3 px-5.5 pt-5.5">
               <div>
-                <DialogTitle class="font-display text-[17px] font-bold">
+                <DialogTitle class="font-display text-[18px] font-bold">
                   {{ title }}
                 </DialogTitle>
-                <p v-if="subtitle" class="mt-0.5 text-[12.5px] text-ink-soft">
+                <p v-if="subtitle" class="mt-0.5 text-[14px] text-ink-soft">
                   {{ subtitle }}
                 </p>
               </div>
