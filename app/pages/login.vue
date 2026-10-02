@@ -27,6 +27,10 @@ const password = ref('');
 const errorMessage = ref('');
 const isRegisterMode = ref(false);
 const showPassword = ref(false);
+const isSubmitting = ref(false);
+const isGuestLoggingIn = ref(false);
+
+const isBusy = computed(() => isSubmitting.value || isGuestLoggingIn.value);
 
 const toggleMode = () => {
   isRegisterMode.value = !isRegisterMode.value;
@@ -36,30 +40,19 @@ const toggleMode = () => {
 };
 
 const handleSubmit = async () => {
+  if (isBusy.value) return;
+
   errorMessage.value = '';
+  isSubmitting.value = true;
 
-  if (isRegisterMode.value) {
-    const { error } = await supabase.auth.signUp({
-      email: email.value,
-      password: password.value,
-    });
-
-    if (error) {
-      errorMessage.value = translateAuthError(error);
-      return;
-    }
-
-    await navigateTo('/my-books');
-    return;
-  }
-
-  const { error } = await supabase.auth.signInWithPassword({
-    email: email.value,
-    password: password.value,
-  });
+  const credentials = { email: email.value, password: password.value };
+  const { error } = isRegisterMode.value
+    ? await supabase.auth.signUp(credentials)
+    : await supabase.auth.signInWithPassword(credentials);
 
   if (error) {
     errorMessage.value = translateAuthError(error);
+    isSubmitting.value = false;
     return;
   }
 
@@ -67,12 +60,16 @@ const handleSubmit = async () => {
 };
 
 const handleGuestLogin = async () => {
+  if (isBusy.value) return;
+
   errorMessage.value = '';
+  isGuestLoggingIn.value = true;
 
   const { error } = await supabase.auth.signInAnonymously();
 
   if (error) {
     errorMessage.value = translateAuthError(error);
+    isGuestLoggingIn.value = false;
     return;
   }
 
@@ -145,13 +142,24 @@ const handleGuestLogin = async () => {
         </p>
         <button
           type="submit"
-          class="cursor-pointer rounded-md bg-primary py-2.5 font-display font-semibold text-white transition-colors hover:bg-primary-hover"
+          class="relative cursor-pointer rounded-md bg-primary py-2.5 font-display font-semibold text-white transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:bg-ink-soft"
+          :disabled="isBusy"
+          :aria-busy="isSubmitting"
         >
-          {{ isRegisterMode ? '建立帳號' : '登入' }}
+          <span :class="{ invisible: isSubmitting }">
+            {{ isRegisterMode ? '建立帳號' : '登入' }}
+          </span>
+          <span
+            v-if="isSubmitting"
+            class="absolute inset-0 flex items-center justify-center"
+          >
+            <AppSpinner size="sm" />
+          </span>
         </button>
         <button
           type="button"
-          class="cursor-pointer text-sm text-ink-soft hover:text-primary"
+          class="cursor-pointer text-sm text-ink-soft enabled:hover:text-primary disabled:cursor-not-allowed"
+          :disabled="isBusy"
           @click="toggleMode"
         >
           {{ isRegisterMode ? '已經有帳號？直接登入' : '還沒有帳號？建立帳號' }}
@@ -163,10 +171,18 @@ const handleGuestLogin = async () => {
         </div>
         <button
           type="button"
-          class="cursor-pointer rounded-md border border-line py-2.5 font-display font-semibold text-ink transition-colors hover:border-primary hover:text-primary"
+          class="relative cursor-pointer rounded-md border border-line py-2.5 font-display font-semibold text-ink transition-colors enabled:hover:border-primary enabled:hover:text-primary disabled:cursor-not-allowed disabled:text-ink-soft"
+          :disabled="isBusy"
+          :aria-busy="isGuestLoggingIn"
           @click="handleGuestLogin"
         >
-          以訪客身分試用
+          <span :class="{ invisible: isGuestLoggingIn }">以訪客身分試用</span>
+          <span
+            v-if="isGuestLoggingIn"
+            class="absolute inset-0 flex items-center justify-center"
+          >
+            <AppSpinner size="sm" />
+          </span>
         </button>
       </form>
     </div>
