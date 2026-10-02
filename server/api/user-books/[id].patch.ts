@@ -53,9 +53,9 @@ export default defineEventHandler(async (event) => {
     .select('*, book:books(*)')
     .single();
 
-  // PGRST116: `.single()` matched no rows — the id doesn't exist, or RLS hid
-  // another user's row. Both are reported as 404 to avoid leaking existence.
-  if (error?.code === 'PGRST116') {
+  // The id doesn't exist, or RLS hid another user's row. Both are reported
+  // as 404 to avoid leaking existence.
+  if (error?.code === SUPABASE_ERROR_CODE.NO_ROWS) {
     throw createError({
       statusCode: 404,
       statusMessage: 'User book not found',
