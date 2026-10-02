@@ -24,6 +24,8 @@ const { data: notes, status: loadStatus } = useLazyFetch<Note[]>(
 );
 
 const draftTextarea = useTemplateRef('draftTextarea');
+const hasFinePointer =
+  import.meta.client && window.matchMedia('(pointer: fine)').matches;
 const draftContent = ref('');
 const isSubmitting = ref(false);
 const pendingDeleteNoteId = ref<string | null>(null);
@@ -93,7 +95,7 @@ const handleConfirmDelete = async () => {
   <AppModal
     :title="userBook.book.title"
     subtitle="筆記"
-    :initial-focus="draftTextarea"
+    :initial-focus="hasFinePointer ? draftTextarea : null"
     @close="emit('close')"
   >
     <form class="mt-4 flex flex-col" @submit.prevent="handleAddNote">
