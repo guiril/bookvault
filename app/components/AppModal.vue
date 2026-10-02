@@ -62,10 +62,10 @@ const emit = defineEmits<{
           leave-to="scale-95 opacity-0"
         >
           <DialogPanel
-            class="max-h-[min(900px,100%)] w-full overflow-y-auto rounded-xl bg-surface px-5.5 pt-5.5 pb-5 text-ink"
+            class="flex max-h-[min(900px,100%)] w-full flex-col rounded-xl bg-surface text-ink"
             :class="sizeClass[size]"
           >
-            <div class="flex items-start justify-between gap-3">
+            <div class="flex items-start justify-between gap-3 px-5.5 pt-5.5">
               <div>
                 <DialogTitle class="font-display text-[17px] font-bold">
                   {{ title }}
@@ -83,7 +83,9 @@ const emit = defineEmits<{
                 &times;
               </button>
             </div>
-            <slot />
+            <div class="overflow-y-auto px-5.5 pb-5">
+              <slot />
+            </div>
           </DialogPanel>
         </TransitionChild>
       </div>
