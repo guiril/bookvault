@@ -1,7 +1,5 @@
 import { serverSupabaseUser } from '#supabase/server';
 
-import type { GoogleBooksVolume } from '../../utils/google-books';
-
 interface GoogleBooksSearchResponse {
   items?: GoogleBooksVolume[];
 }
