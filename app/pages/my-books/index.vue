@@ -93,7 +93,7 @@ const handleToggleStatus = async (userBookId: string) => {
 </script>
 
 <template>
-  <div class="mx-auto max-w-7xl px-6 py-10 md:px-10">
+  <div class="mx-auto max-w-7xl px-10 py-10 max-md:px-6">
     <div class="flex justify-end">
       <NuxtLink
         to="/my-books/new"
