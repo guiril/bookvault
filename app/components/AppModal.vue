@@ -7,9 +7,25 @@ import {
   TransitionRoot,
 } from '@headlessui/vue';
 
-const { title, subtitle } = defineProps<{
+type ModalSize = 'sm' | 'md';
+
+const sizeClass: Record<ModalSize, string> = {
+  sm: 'max-w-90',
+  md: 'max-w-240',
+};
+
+const {
+  title,
+  subtitle,
+  size = 'md',
+  open = true,
+  initialFocus = null,
+} = defineProps<{
   title: string;
   subtitle?: string;
+  size?: ModalSize;
+  open?: boolean;
+  initialFocus?: HTMLElement | null;
 }>();
 
 const emit = defineEmits<{
@@ -18,8 +34,12 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <TransitionRoot appear :show="true" as="template">
-    <Dialog class="relative z-50" @close="emit('close')">
+  <TransitionRoot appear :show="open" as="template">
+    <Dialog
+      class="relative z-50"
+      :initial-focus="initialFocus"
+      @close="emit('close')"
+    >
       <TransitionChild
         as="template"
         enter="duration-150 ease-out"
@@ -42,7 +62,8 @@ const emit = defineEmits<{
           leave-to="scale-95 opacity-0"
         >
           <DialogPanel
-            class="max-h-[min(900px,100%)] w-full max-w-240 overflow-y-auto rounded-xl bg-surface px-5.5 pt-5.5 pb-5 text-ink"
+            class="max-h-[min(900px,100%)] w-full overflow-y-auto rounded-xl bg-surface px-5.5 pt-5.5 pb-5 text-ink"
+            :class="sizeClass[size]"
           >
             <div class="flex items-start justify-between gap-3">
               <div>
