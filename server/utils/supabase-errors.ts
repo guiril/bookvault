@@ -6,4 +6,6 @@ export const SUPABASE_ERROR_CODE = {
   RLS_VIOLATION: '42501',
   // unique_violation: the row conflicts with a unique constraint.
   UNIQUE_VIOLATION: '23505',
+  // check_violation: the row fails a `check` constraint.
+  CHECK_VIOLATION: '23514',
 } as const;

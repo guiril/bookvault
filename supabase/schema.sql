@@ -19,7 +19,9 @@ create table if not exists user_books (
   finished_at date,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
-  unique (user_id, book_id)
+  unique (user_id, book_id),
+  constraint user_books_finished_after_started
+    check (finished_at >= started_at)
 );
 
 create table if not exists notes (

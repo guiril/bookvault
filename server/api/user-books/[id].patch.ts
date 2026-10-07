@@ -4,8 +4,13 @@ import type { UserBookStatus } from '~/types/database';
 
 interface UpdateUserBookBody {
   status: UserBookStatus;
-  finished_at?: string;
+  started_at?: string | null;
+  finished_at?: string | null;
 }
+
+// `undefined` means the field was left out of the request body.
+const isOptionalDate = (value: unknown) =>
+  value === undefined || value === null || isDateString(value);
 
 export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event);
@@ -35,9 +40,16 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  if (!isOptionalDate(body.started_at) || !isOptionalDate(body.finished_at)) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Invalid date',
+    });
+  }
+
   const finishedAt =
     body.status === 'finished'
-      ? (body.finished_at ?? new Date().toISOString().slice(0, 10))
+      ? (body.finished_at ?? getTodayDateString())
       : null;
 
   const supabase = await serverSupabaseClient(event);
@@ -46,6 +58,8 @@ export default defineEventHandler(async (event) => {
     .from('user_books')
     .update({
       status: body.status,
+      // Leaving `started_at` out of the body keeps the stored value.
+      ...(body.started_at !== undefined && { started_at: body.started_at }),
       finished_at: finishedAt,
       updated_at: new Date().toISOString(),
     })
@@ -59,6 +73,13 @@ export default defineEventHandler(async (event) => {
     throw createError({
       statusCode: 404,
       statusMessage: 'User book not found',
+    });
+  }
+
+  if (error?.code === SUPABASE_ERROR_CODE.CHECK_VIOLATION) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Finished date is before start date',
     });
   }
 
