@@ -72,6 +72,18 @@ const handleNotesError = (message: string) => {
   toastRef.value?.show(message);
 };
 
+const handleBookRemoved = (userBookId: string) => {
+  selectedInfoBookId.value = null;
+  userBooks.value = (userBooks.value ?? []).filter(
+    (userBook) => userBook.id !== userBookId,
+  );
+  toastRef.value?.show('已從書庫移除');
+};
+
+const handleInfoError = (message: string) => {
+  toastRef.value?.show(message);
+};
+
 const handleToggleStatus = async (userBookId: string) => {
   const userBook = userBooks.value?.find((item) => item.id === userBookId);
 
@@ -146,6 +158,8 @@ const handleToggleStatus = async (userBookId: string) => {
       :user-book="selectedInfoBook"
       @close="selectedInfoBookId = null"
       @toggle-status="handleToggleStatus"
+      @removed="handleBookRemoved"
+      @error="handleInfoError"
     />
     <BookNotesModal
       v-if="selectedNotesBook"

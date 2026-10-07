@@ -13,11 +13,41 @@ const { userBook } = defineProps<{
 const emit = defineEmits<{
   close: [];
   'toggle-status': [userBookId: string];
+  removed: [userBookId: string];
+  error: [message: string];
 }>();
+
+const isConfirmingRemove = ref(false);
+const isRemoving = ref(false);
 
 const toggleLabel = computed(() =>
   userBook.status === 'reading' ? '切換為已讀完' : '切換為閱讀中',
 );
+
+const removeMessage = computed(
+  () => `《${userBook.book.title}》的筆記也會一起刪除，且無法復原。`,
+);
+
+const handleCancelRemove = () => {
+  if (isRemoving.value) return;
+
+  isConfirmingRemove.value = false;
+};
+
+const handleConfirmRemove = async () => {
+  isRemoving.value = true;
+
+  try {
+    await $fetch(`/api/user-books/${userBook.id}`, { method: 'DELETE' });
+
+    emit('removed', userBook.id);
+  } catch {
+    emit('error', '移除失敗，請稍後再試');
+  } finally {
+    isRemoving.value = false;
+    isConfirmingRemove.value = false;
+  }
+};
 </script>
 
 <template>
@@ -65,5 +95,24 @@ const toggleLabel = computed(() =>
         }}</span>
       </div>
     </div>
+    <div class="mt-5 flex justify-end">
+      <button
+        type="button"
+        class="cursor-pointer text-[13px] max-sm:text-[14px] font-semibold text-danger hover:underline"
+        @click="isConfirmingRemove = true"
+      >
+        從書庫移除
+      </button>
+    </div>
+    <AppConfirmModal
+      :open="isConfirmingRemove"
+      title="從書庫移除這本書？"
+      :message="removeMessage"
+      confirm-label="移除"
+      variant="danger"
+      :is-confirming="isRemoving"
+      @confirm="handleConfirmRemove"
+      @cancel="handleCancelRemove"
+    />
   </AppModal>
 </template>
