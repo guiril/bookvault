@@ -12,7 +12,7 @@ create table if not exists books (
 
 create table if not exists user_books (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references auth.users (id),
+  user_id uuid not null references auth.users (id) on delete cascade,
   book_id uuid not null references books (id),
   status text not null check (status in ('reading', 'finished')),
   started_at date,
