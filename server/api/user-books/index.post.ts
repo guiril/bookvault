@@ -77,6 +77,13 @@ export default defineEventHandler(async (event) => {
     .select()
     .single();
 
+  if (insertUserBookError?.code === SUPABASE_ERROR_CODE.UNIQUE_VIOLATION) {
+    throw createError({
+      statusCode: 409,
+      statusMessage: 'Book already in library',
+    });
+  }
+
   if (insertUserBookError) {
     throw createError({
       statusCode: 500,

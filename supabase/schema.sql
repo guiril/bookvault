@@ -18,7 +18,8 @@ create table if not exists user_books (
   started_at date,
   finished_at date,
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  unique (user_id, book_id)
 );
 
 create table if not exists notes (

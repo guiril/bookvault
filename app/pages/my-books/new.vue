@@ -92,8 +92,15 @@ const handleFormSubmit = async () => {
     });
 
     await navigateTo('/my-books');
-  } catch {
-    submitErrorMessage.value = '新增失敗，請稍後再試';
+  } catch (error) {
+    const isAlreadyInLibrary =
+      error instanceof Error &&
+      'statusCode' in error &&
+      error.statusCode === 409;
+
+    submitErrorMessage.value = isAlreadyInLibrary
+      ? '這本書已經在書庫裡了'
+      : '新增失敗，請稍後再試';
   } finally {
     isSubmitting.value = false;
   }
