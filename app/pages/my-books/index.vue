@@ -10,6 +10,7 @@ const { data: userBooks, refresh } =
 
 const selectedInfoBookId = ref<string | null>(null);
 const selectedNotesBookId = ref<string | null>(null);
+const togglingBookId = ref<string | null>(null);
 
 const toastRef = useTemplateRef('toastRef');
 
@@ -85,11 +86,15 @@ const handleInfoError = (message: string) => {
 };
 
 const handleToggleStatus = async (userBookId: string) => {
+  if (togglingBookId.value) return;
+
   const userBook = userBooks.value?.find((item) => item.id === userBookId);
 
   if (!userBook) return;
 
   const nextStatus = userBook.status === 'reading' ? 'finished' : 'reading';
+
+  togglingBookId.value = userBookId;
 
   try {
     await $fetch(`/api/user-books/${userBookId}`, {
@@ -100,6 +105,8 @@ const handleToggleStatus = async (userBookId: string) => {
     await refresh();
   } catch {
     toastRef.value?.show('切換狀態失敗，請稍後再試');
+  } finally {
+    togglingBookId.value = null;
   }
 };
 </script>
@@ -156,6 +163,7 @@ const handleToggleStatus = async (userBookId: string) => {
     <BookInfoModal
       v-if="selectedInfoBook"
       :user-book="selectedInfoBook"
+      :is-toggling-status="togglingBookId === selectedInfoBook.id"
       @close="selectedInfoBookId = null"
       @toggle-status="handleToggleStatus"
       @removed="handleBookRemoved"

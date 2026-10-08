@@ -6,8 +6,9 @@ const statusLabel: Record<UserBook['status'], string> = {
   finished: '已讀完',
 };
 
-const { userBook } = defineProps<{
+const { userBook, isTogglingStatus = false } = defineProps<{
   userBook: UserBookWithBook;
+  isTogglingStatus?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -71,10 +72,20 @@ const handleConfirmRemove = async () => {
           {{ statusLabel[userBook.status] }}
           <button
             type="button"
-            class="cursor-pointer text-[12px] max-sm:text-[13px] font-semibold text-primary hover:underline"
+            class="relative cursor-pointer text-[12px] max-sm:text-[13px] font-semibold text-primary hover:underline disabled:cursor-not-allowed disabled:no-underline"
+            :disabled="isTogglingStatus"
+            :aria-busy="isTogglingStatus"
             @click="emit('toggle-status', userBook.id)"
           >
-            {{ toggleLabel }}
+            <span :class="{ invisible: isTogglingStatus }">
+              {{ toggleLabel }}
+            </span>
+            <span
+              v-if="isTogglingStatus"
+              class="absolute inset-0 flex items-center justify-center"
+            >
+              <AppSpinner size="sm" />
+            </span>
           </button>
         </span>
       </div>
