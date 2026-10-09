@@ -99,7 +99,11 @@ const handleToggleStatus = async (userBookId: string) => {
   try {
     await $fetch(`/api/user-books/${userBookId}`, {
       method: 'PATCH',
-      body: { status: nextStatus },
+      body: {
+        status: nextStatus,
+        finished_at:
+          nextStatus === 'finished' ? getLocalTodayDateString() : undefined,
+      },
     });
 
     await refresh();
