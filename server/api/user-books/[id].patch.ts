@@ -8,10 +8,6 @@ interface UpdateUserBookBody {
   finished_at?: string | null;
 }
 
-// `undefined` means the field was left out of the request body.
-const isOptionalDate = (value: unknown) =>
-  value === undefined || value === null || isDateString(value);
-
 export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event);
 
