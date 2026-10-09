@@ -23,6 +23,15 @@ const emit = defineEmits<{
   submit: [];
   reset: [];
 }>();
+
+watch(
+  () => formValues.value.status,
+  (status) => {
+    if (status === 'finished' && !formValues.value.finished_at) {
+      formValues.value.finished_at = getLocalTodayDateString();
+    }
+  },
+);
 </script>
 
 <template>
@@ -108,6 +117,7 @@ const emit = defineEmits<{
         id="finished_at"
         v-model="formValues.finished_at"
         type="date"
+        :min="formValues.started_at || undefined"
         required
         class="rounded-md border border-line px-3 py-2 text-ink focus:border-primary focus:outline-none"
       />
