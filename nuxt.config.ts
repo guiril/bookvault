@@ -25,7 +25,6 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
-    supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
     googleBooksApiKey: process.env.GOOGLE_BOOKS_API_KEY,
   },
   icon: {

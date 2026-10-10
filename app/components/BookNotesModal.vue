@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Note, UserBookWithBook } from '~/types/database';
+import type { Note, UserBook } from '~/types/database';
 
 const noteDateFormatter = new Intl.DateTimeFormat('zh-TW', {
   year: 'numeric',
@@ -11,7 +11,7 @@ const noteDateFormatter = new Intl.DateTimeFormat('zh-TW', {
 });
 
 const { userBook } = defineProps<{
-  userBook: UserBookWithBook;
+  userBook: UserBook;
 }>();
 
 const emit = defineEmits<{
@@ -93,7 +93,7 @@ const handleConfirmDelete = async () => {
 
 <template>
   <AppModal
-    :title="userBook.book.title"
+    :title="userBook.title"
     subtitle="筆記"
     :initial-focus="hasFinePointer ? draftTextarea : null"
     @close="emit('close')"

@@ -1,8 +1,4 @@
-import {
-  serverSupabaseClient,
-  serverSupabaseServiceRole,
-  serverSupabaseUser,
-} from '#supabase/server';
+import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server';
 
 import type { UserBookStatus } from '~/types/database';
 
@@ -43,32 +39,6 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // `books` is shared across users and RLS only allows SELECT, so writes
-  // need the service-role client, which bypasses RLS.
-  const serviceRoleClient = serverSupabaseServiceRole(event);
-
-  const { data: book, error: upsertBookError } = await serviceRoleClient
-    .from('books')
-    .upsert(
-      {
-        google_books_id: body.google_books_id,
-        title: body.title,
-        author: body.author,
-        cover_url: body.cover_url,
-        description: body.description,
-      },
-      { onConflict: 'google_books_id' },
-    )
-    .select('id')
-    .single();
-
-  if (upsertBookError || !book) {
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Failed to save book',
-    });
-  }
-
   const supabase = await serverSupabaseClient(event);
 
   const { data: userBook, error: insertUserBookError } = await supabase
@@ -76,7 +46,11 @@ export default defineEventHandler(async (event) => {
     .insert({
       // serverSupabaseUser returns the raw JWT payload; the user id is `sub`.
       user_id: user.sub,
-      book_id: book.id,
+      google_books_id: body.google_books_id,
+      title: body.title,
+      author: body.author,
+      cover_url: body.cover_url,
+      description: body.description,
       status: body.status,
       started_at: body.started_at,
       finished_at: body.status === 'finished' ? body.finished_at : null,

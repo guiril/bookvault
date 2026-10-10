@@ -60,7 +60,7 @@ export default defineEventHandler(async (event) => {
       updated_at: new Date().toISOString(),
     })
     .eq('id', userBookId)
-    .select('*, book:books(*)')
+    .select()
     .single();
 
   // The id doesn't exist, or RLS hid another user's row. Both are reported

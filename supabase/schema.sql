@@ -1,25 +1,20 @@
 -- bookvault schema + RLS policies
 -- Run this in the Supabase SQL Editor (Project → SQL Editor → New query).
 
-create table if not exists books (
-  id uuid primary key default gen_random_uuid(),
-  google_books_id text unique,
-  title text not null,
-  author text not null default '',
-  cover_url text,
-  description text
-);
-
 create table if not exists user_books (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users (id) on delete cascade,
-  book_id uuid not null references books (id),
+  google_books_id text,
+  title text not null,
+  author text not null default '',
+  cover_url text,
+  description text,
   status text not null check (status in ('reading', 'finished')),
   started_at date,
   finished_at date,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
-  unique (user_id, book_id),
+  unique (user_id, google_books_id),
   constraint user_books_finished_after_started
     check (finished_at >= started_at)
 );
@@ -31,16 +26,8 @@ create table if not exists notes (
   created_at timestamptz not null default now()
 );
 
-alter table books enable row level security;
 alter table user_books enable row level security;
 alter table notes enable row level security;
-
--- books: read-only for authenticated users; writes go through the
--- server-side service-role client, which bypasses RLS.
-create policy "books_select_authenticated"
-  on books for select
-  to authenticated
-  using (true);
 
 -- user_books: each user can only see/modify their own rows.
 create policy "user_books_select_own"

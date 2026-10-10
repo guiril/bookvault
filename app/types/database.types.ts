@@ -1,7 +1,7 @@
 // `@nuxtjs/supabase` looks for a `Database` type at this exact path by
 // default and uses it to type every `.from(...)` query. Without it,
-// `serverSupabaseClient`/`serverSupabaseServiceRole` fall back to
-// `Database = unknown` and all query results type as `never`.
+// `serverSupabaseClient` falls back to `Database = unknown` and all query
+// results type as `never`.
 // Hand-written to match the shape Supabase's own `supabase gen types
 // typescript` generator produces (see supabase/schema.sql for the source of
 // truth) — keep the two in sync manually when the schema changes. Every
@@ -12,38 +12,15 @@ import type { UserBookStatus } from './database';
 export interface Database {
   public: {
     Tables: {
-      books: {
+      user_books: {
         Row: {
           id: string;
+          user_id: string;
           google_books_id: string | null;
           title: string;
           author: string;
           cover_url: string | null;
           description: string | null;
-        };
-        Insert: {
-          id?: string;
-          google_books_id?: string | null;
-          title: string;
-          author?: string;
-          cover_url?: string | null;
-          description?: string | null;
-        };
-        Update: {
-          id?: string;
-          google_books_id?: string | null;
-          title?: string;
-          author?: string;
-          cover_url?: string | null;
-          description?: string | null;
-        };
-        Relationships: [];
-      };
-      user_books: {
-        Row: {
-          id: string;
-          user_id: string;
-          book_id: string;
           status: UserBookStatus;
           started_at: string | null;
           finished_at: string | null;
@@ -53,7 +30,11 @@ export interface Database {
         Insert: {
           id?: string;
           user_id: string;
-          book_id: string;
+          google_books_id?: string | null;
+          title: string;
+          author?: string;
+          cover_url?: string | null;
+          description?: string | null;
           status: UserBookStatus;
           started_at?: string | null;
           finished_at?: string | null;
@@ -63,22 +44,18 @@ export interface Database {
         Update: {
           id?: string;
           user_id?: string;
-          book_id?: string;
+          google_books_id?: string | null;
+          title?: string;
+          author?: string;
+          cover_url?: string | null;
+          description?: string | null;
           status?: UserBookStatus;
           started_at?: string | null;
           finished_at?: string | null;
           created_at?: string;
           updated_at?: string;
         };
-        Relationships: [
-          {
-            foreignKeyName: 'user_books_book_id_fkey';
-            columns: ['book_id'];
-            isOneToOne: false;
-            referencedRelation: 'books';
-            referencedColumns: ['id'];
-          },
-        ];
+        Relationships: [];
       };
       notes: {
         Row: {

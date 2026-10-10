@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue';
 
-import type { UserBookStatus, UserBookWithBook } from '~/types/database';
+import type { UserBook, UserBookStatus } from '~/types/database';
 
 type TabKey = 'all' | UserBookStatus;
 
 const { data: userBooks, refresh } =
-  await useFetch<UserBookWithBook[]>('/api/user-books');
+  await useFetch<UserBook[]>('/api/user-books');
 
 const selectedInfoBookId = ref<string | null>(null);
 const selectedNotesBookId = ref<string | null>(null);
@@ -81,7 +81,7 @@ const handleBookRemoved = (userBookId: string) => {
   toastRef.value?.show('已從書庫移除');
 };
 
-const handleBookUpdated = (updatedUserBook: UserBookWithBook) => {
+const handleBookUpdated = (updatedUserBook: UserBook) => {
   userBooks.value = (userBooks.value ?? []).map((userBook) =>
     userBook.id === updatedUserBook.id ? updatedUserBook : userBook,
   );

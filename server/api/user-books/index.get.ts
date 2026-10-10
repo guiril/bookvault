@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
 
   const { data, error } = await supabase
     .from('user_books')
-    .select('*, book:books(*)')
+    .select()
     .order('created_at', { ascending: false });
 
   if (error) {

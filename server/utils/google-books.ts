@@ -1,4 +1,4 @@
-import type { NewBook } from '~/types/database';
+import type { BookDetails } from '~/types/database';
 
 // https://developers.google.com/books/docs/v1/reference/volumes#resource
 export interface GoogleBooksVolume {
@@ -14,7 +14,7 @@ export interface GoogleBooksVolume {
   };
 }
 
-export const mapVolumeToBook = (volume: GoogleBooksVolume): NewBook => {
+export const mapVolumeToBook = (volume: GoogleBooksVolume): BookDetails => {
   const { volumeInfo } = volume;
 
   const author = volumeInfo.authors?.join('、') ?? '';

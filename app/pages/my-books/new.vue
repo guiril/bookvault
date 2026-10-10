@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { BookFormValues } from '~/components/BookConfirmForm.vue';
-import type { NewBook } from '~/types/database';
+import type { BookDetails } from '~/types/database';
 
 const createBlankBookForm = (): BookFormValues => ({
   title: '',
@@ -17,7 +17,7 @@ const isSubmitting = ref(false);
 const submitErrorMessage = ref('');
 
 const searchQuery = ref('');
-const searchResults = ref<NewBook[]>([]);
+const searchResults = ref<BookDetails[]>([]);
 const isSearching = ref(false);
 const hasSearched = ref(false);
 const searchErrorMessage = ref('');
@@ -34,7 +34,7 @@ const handleSearch = async () => {
   searchErrorMessage.value = '';
 
   try {
-    searchResults.value = await $fetch<NewBook[]>('/api/books/search', {
+    searchResults.value = await $fetch<BookDetails[]>('/api/books/search', {
       query: { q: trimmedQuery },
     });
   } catch {
@@ -45,7 +45,7 @@ const handleSearch = async () => {
   }
 };
 
-const selectBook = (book: NewBook) => {
+const selectBook = (book: BookDetails) => {
   selectedGoogleBooksId.value = book.google_books_id;
   searchQuery.value = '';
   searchResults.value = [];

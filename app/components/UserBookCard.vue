@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UserBook, UserBookWithBook } from '~/types/database';
+import type { UserBook } from '~/types/database';
 
 const statusLabel: Record<UserBook['status'], string> = {
   reading: '閱讀中',
@@ -7,7 +7,7 @@ const statusLabel: Record<UserBook['status'], string> = {
 };
 
 const { userBook } = defineProps<{
-  userBook: UserBookWithBook;
+  userBook: UserBook;
 }>();
 
 const emit = defineEmits<{
@@ -22,9 +22,9 @@ const emit = defineEmits<{
   >
     <div class="relative">
       <img
-        v-if="userBook.book.cover_url"
-        :src="userBook.book.cover_url"
-        :alt="userBook.book.title"
+        v-if="userBook.cover_url"
+        :src="userBook.cover_url"
+        :alt="userBook.title"
         class="aspect-2/3 w-full object-cover"
       />
       <div
@@ -42,10 +42,10 @@ const emit = defineEmits<{
     <div class="flex flex-col px-2 pt-1.5 pb-2.5 gap-5.5">
       <div class="flex flex-col gap-1">
         <span class="text-[14px] font-semibold text-ink truncate">
-          {{ userBook.book.title }}
+          {{ userBook.title }}
         </span>
         <span class="text-[12px] max-sm:text-[13px] text-ink-soft truncate">
-          {{ userBook.book.author || '作者不詳' }}
+          {{ userBook.author || '作者不詳' }}
         </span>
       </div>
       <div class="flex items-center justify-between max-sm:hidden">

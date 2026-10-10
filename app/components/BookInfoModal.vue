@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UserBook, UserBookWithBook } from '~/types/database';
+import type { UserBook } from '~/types/database';
 
 type DateField = 'started_at' | 'finished_at';
 
@@ -19,7 +19,7 @@ const statusLabel: Record<UserBook['status'], string> = {
 };
 
 const { userBook, isTogglingStatus = false } = defineProps<{
-  userBook: UserBookWithBook;
+  userBook: UserBook;
   isTogglingStatus?: boolean;
 }>();
 
@@ -27,7 +27,7 @@ const emit = defineEmits<{
   close: [];
   'toggle-status': [userBookId: string];
   removed: [userBookId: string];
-  updated: [userBook: UserBookWithBook];
+  updated: [userBook: UserBook];
   error: [message: string];
 }>();
 
@@ -44,7 +44,7 @@ const toggleLabel = computed(() =>
 );
 
 const removeMessage = computed(
-  () => `《${userBook.book.title}》的筆記也會一起刪除，且無法復原。`,
+  () => `《${userBook.title}》的筆記也會一起刪除，且無法復原。`,
 );
 
 const dateRows = computed<DateRow[]>(() => {
@@ -112,7 +112,7 @@ const handleSaveDate = async () => {
   isSaving.value = true;
 
   try {
-    const updatedUserBook = await $fetch<UserBookWithBook>(
+    const updatedUserBook = await $fetch<UserBook>(
       `/api/user-books/${userBook.id}`,
       {
         method: 'PATCH',
@@ -137,15 +137,15 @@ const handleSaveDate = async () => {
 
 <template>
   <AppModal
-    :title="userBook.book.title"
-    :subtitle="userBook.book.author || '作者不詳'"
+    :title="userBook.title"
+    :subtitle="userBook.author || '作者不詳'"
     @close="emit('close')"
   >
     <p
-      v-if="userBook.book.description"
+      v-if="userBook.description"
       class="mt-4 text-[13px] max-sm:text-[14px] leading-[1.6] text-ink"
     >
-      {{ userBook.book.description }}
+      {{ userBook.description }}
     </p>
     <form class="mt-4 flex flex-col gap-3" @submit.prevent="handleSaveDate">
       <div
