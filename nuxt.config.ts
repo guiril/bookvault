@@ -31,6 +31,9 @@ export default defineNuxtConfig({
     cssLayer: 'base',
   },
   supabase: {
+    cookieOptions: {
+      secure: process.env.NODE_ENV === 'production',
+    },
     redirectOptions: {
       login: '/login',
       callback: '/confirm',
