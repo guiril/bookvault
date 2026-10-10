@@ -94,7 +94,6 @@ const handleConfirmDelete = async () => {
 <template>
   <AppModal
     :title="userBook.title"
-    subtitle="筆記"
     :initial-focus="hasFinePointer ? draftTextarea : null"
     @close="emit('close')"
   >
@@ -107,7 +106,7 @@ const handleConfirmDelete = async () => {
       />
       <button
         type="submit"
-        class="relative mt-2.5 cursor-pointer self-end rounded-lg bg-primary px-4 py-2.25 font-display text-[13px] max-sm:text-[14px] font-semibold text-white transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:bg-ink-soft"
+        class="relative mt-2.5 self-end max-sm:w-full px-4 py-2.25 max-sm:py-3 font-display text-[14px] max-sm:text-base font-semibold rounded-lg bg-primary text-white cursor-pointer transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:bg-ink-soft"
         :disabled="!canSubmit"
         :aria-busy="isSubmitting"
       >
@@ -128,7 +127,7 @@ const handleConfirmDelete = async () => {
     </div>
     <p
       v-else-if="loadStatus === 'error'"
-      class="mt-4 text-[13px] max-sm:text-[14px] text-ink-soft"
+      class="mt-4 text-[14px] max-sm:text-base text-ink-soft"
     >
       筆記載入失敗，請關閉後再試一次
     </p>
@@ -140,13 +139,13 @@ const handleConfirmDelete = async () => {
       >
         <div class="min-w-0">
           <p
-            class="text-[14px] leading-[1.55] wrap-break-word whitespace-pre-wrap"
+            class="text-[14px] max-sm:text-base leading-[1.55] wrap-break-word whitespace-pre-wrap"
           >
             {{ note.content }}
           </p>
           <time
             :datetime="note.created_at"
-            class="mt-1.5 block text-[11px] max-sm:text-[12px] text-ink-soft"
+            class="mt-1.5 block text-[12px] max-sm:text-[14px] text-ink-soft"
           >
             {{ formatNoteDate(note.created_at) }}
           </time>
@@ -154,16 +153,16 @@ const handleConfirmDelete = async () => {
         <AppTooltip text="刪除">
           <button
             type="button"
-            class="flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center text-ink-soft transition-colors hover:text-primary"
+            class="flex size-6 max-sm:size-7 shrink-0 items-center justify-center text-ink-soft cursor-pointer transition-colors hover:text-primary"
             aria-label="刪除"
             @click="handleRequestDelete(note.id)"
           >
-            <Icon name="material-symbols:delete-outline" />
+            <Icon name="material-symbols:delete-outline" class="text-[18px]" />
           </button>
         </AppTooltip>
       </li>
     </ul>
-    <p v-else class="mt-4 text-[13px] max-sm:text-[14px] text-ink-soft">
+    <p v-else class="mt-4 text-[14px] max-sm:text-base text-ink-soft">
       還沒有筆記，寫下第一則吧。
     </p>
     <AppConfirmModal

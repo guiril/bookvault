@@ -123,18 +123,18 @@ const handleToggleStatus = async (userBookId: string) => {
 </script>
 
 <template>
-  <div class="mx-auto max-w-7xl px-10 py-10 max-md:px-6">
+  <div class="mx-auto max-w-7xl p-10 max-md:p-6">
     <div class="flex justify-end">
       <NuxtLink
         to="/my-books/new"
-        class="cursor-pointer rounded-md bg-primary px-4 py-2 font-display text-[13px] max-sm:text-[14px] font-semibold text-white transition-colors hover:bg-primary-hover"
+        class="px-4 py-2 font-display text-[13px] max-sm:text-base font-semibold rounded-md bg-primary text-white cursor-pointer transition-colors hover:bg-primary-hover"
       >
         + 新增書本
       </NuxtLink>
     </div>
     <TabGroup>
       <TabList
-        class="mt-4.5 inline-flex gap-0.5 rounded-[9px] border border-line bg-surface p-0.75"
+        class="inline-flex gap-0.5 mt-4.5 max-sm:mt-6 p-0.75 max-sm:p-1 rounded-[9px] border border-line bg-surface"
       >
         <Tab
           v-for="tab in tabs"

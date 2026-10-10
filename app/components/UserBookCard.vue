@@ -34,17 +34,19 @@ const emit = defineEmits<{
         無封面
       </div>
       <span
-        class="absolute top-2 left-2 hidden rounded-md bg-ink/75 px-1.5 py-1 text-[12px] font-semibold whitespace-nowrap text-surface backdrop-blur-sm max-sm:block"
+        class="absolute top-2 left-2 hidden max-sm:block px-1.5 py-1 text-[12px] max-sm:text-[14px] font-semibold whitespace-nowrap rounded-md bg-ink/75 text-surface backdrop-blur-sm"
       >
         {{ statusLabel[userBook.status] }}
       </span>
     </div>
     <div class="flex flex-col px-2 pt-1.5 pb-2.5 gap-5.5">
       <div class="flex flex-col gap-1">
-        <span class="text-[14px] font-semibold text-ink truncate">
+        <span
+          class="truncate text-[14px] max-sm:text-base font-semibold text-ink"
+        >
           {{ userBook.title }}
         </span>
-        <span class="text-[12px] max-sm:text-[13px] text-ink-soft truncate">
+        <span class="truncate text-[12px] max-sm:text-[14px] text-ink-soft">
           {{ userBook.author || '作者不詳' }}
         </span>
       </div>
@@ -81,7 +83,7 @@ const emit = defineEmits<{
     <div class="mt-auto hidden grid-cols-2 border-t border-line max-sm:grid">
       <button
         type="button"
-        class="flex h-11 cursor-pointer items-center justify-center gap-1.5 text-[14px] text-ink-soft"
+        class="flex items-center justify-center gap-1.5 py-4 text-[14px] max-sm:text-base text-ink-soft cursor-pointer"
         @click="emit('open-info', userBook.id)"
       >
         <Icon name="material-symbols:info-outline" class="text-[18px]" />
@@ -89,7 +91,7 @@ const emit = defineEmits<{
       </button>
       <button
         type="button"
-        class="flex h-11 cursor-pointer items-center justify-center gap-1.5 border-l border-line text-[14px] text-ink-soft"
+        class="flex items-center justify-center gap-1.5 py-4 text-[14px] max-sm:text-base border-l border-line text-ink-soft cursor-pointer"
         @click="emit('open-notes', userBook.id)"
       >
         <Icon name="material-symbols:edit-note-outline" class="text-[18px]" />

@@ -65,18 +65,25 @@ const emit = defineEmits<{
             class="flex max-h-[min(900px,100%)] w-full flex-col rounded-xl bg-surface text-ink"
             :class="sizeClass[size]"
           >
-            <div class="flex items-start justify-between gap-3 px-5.5 pt-5.5">
+            <div
+              class="flex items-start justify-between gap-3 px-5.5 pt-5.5 pb-2"
+            >
               <div>
-                <DialogTitle class="font-display text-[18px] font-bold">
+                <DialogTitle
+                  class="font-display text-[18px] max-sm:text-[20px] font-bold"
+                >
                   {{ title }}
                 </DialogTitle>
-                <p v-if="subtitle" class="mt-0.5 text-[14px] text-ink-soft">
+                <p
+                  v-if="subtitle"
+                  class="mt-0.5 text-[14px] max-sm:text-base text-ink-soft"
+                >
                   {{ subtitle }}
                 </p>
               </div>
               <button
                 type="button"
-                class="cursor-pointer px-0.5 text-xl leading-none text-ink-soft hover:text-ink"
+                class="-my-1.5 p-1.5 text-xl max-sm:text-2xl leading-none text-ink-soft cursor-pointer hover:text-ink"
                 aria-label="關閉"
                 @click="emit('close')"
               >

@@ -17,7 +17,7 @@ const handleLogout = async () => {
       </NuxtLink>
       <button
         type="button"
-        class="cursor-pointer text-sm font-medium text-white/80 transition-colors hover:text-white"
+        class="-my-2.5 px-2 py-2.5 text-sm max-sm:text-base font-medium text-white/80 cursor-pointer transition-colors hover:text-white"
         @click="handleLogout"
       >
         登出

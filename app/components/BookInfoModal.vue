@@ -143,13 +143,13 @@ const handleSaveDate = async () => {
   >
     <p
       v-if="userBook.description"
-      class="mt-4 text-[13px] max-sm:text-[14px] leading-[1.6] text-ink"
+      class="mt-4 max-sm:mt-5 text-[14px] max-sm:text-base leading-[1.6] text-ink"
     >
       {{ userBook.description }}
     </p>
     <form class="mt-4 flex flex-col gap-3" @submit.prevent="handleSaveDate">
       <div
-        class="flex items-center justify-between gap-3 border-b border-line py-2.25 text-[13px] max-sm:text-[14px]"
+        class="flex items-center justify-between gap-3 py-2.25 text-[14px] max-sm:text-base border-b border-line"
       >
         <span class="text-ink-soft">狀態</span>
         <span class="flex items-center gap-2">
@@ -157,7 +157,7 @@ const handleSaveDate = async () => {
           <button
             v-if="!isEditing"
             type="button"
-            class="relative cursor-pointer text-[12px] max-sm:text-[13px] font-semibold text-primary hover:underline disabled:cursor-not-allowed disabled:no-underline"
+            class="relative max-sm:-mx-2 max-sm:-my-3 max-sm:px-2 max-sm:py-3 text-[12px] max-sm:text-[14px] font-semibold text-primary cursor-pointer hover:underline disabled:cursor-not-allowed disabled:no-underline"
             :disabled="isTogglingStatus"
             :aria-busy="isTogglingStatus"
             @click="emit('toggle-status', userBook.id)"
@@ -177,12 +177,12 @@ const handleSaveDate = async () => {
       <div
         v-for="dateRow in dateRows"
         :key="dateRow.field"
-        class="flex items-center justify-between gap-3 border-b border-line py-2.25 text-[13px] max-sm:text-[14px]"
+        class="flex items-center justify-between gap-3 py-2.25 text-[14px] max-sm:text-base border-b border-line"
       >
         <span class="text-ink-soft">{{ dateRow.label }}</span>
         <span
           v-if="editingField === dateRow.field"
-          class="flex items-center gap-2"
+          class="flex items-center gap-2 max-sm:gap-4"
         >
           <input
             v-model="draftDate"
@@ -195,7 +195,7 @@ const handleSaveDate = async () => {
           />
           <button
             type="button"
-            class="cursor-pointer text-[12px] max-sm:text-[13px] font-semibold text-ink-soft hover:underline disabled:cursor-not-allowed disabled:no-underline"
+            class="max-sm:-mx-2 max-sm:-my-3 max-sm:px-2 max-sm:py-3 text-[12px] max-sm:text-[14px] font-semibold text-ink-soft cursor-pointer hover:underline disabled:cursor-not-allowed disabled:no-underline"
             :disabled="isSaving"
             @click="editingField = null"
           >
@@ -203,7 +203,7 @@ const handleSaveDate = async () => {
           </button>
           <button
             type="submit"
-            class="relative cursor-pointer text-[12px] max-sm:text-[13px] font-semibold text-primary hover:underline disabled:cursor-not-allowed disabled:no-underline"
+            class="relative max-sm:-mx-2 max-sm:-my-3 max-sm:px-2 max-sm:py-3 text-[12px] max-sm:text-[14px] font-semibold text-primary cursor-pointer hover:underline disabled:cursor-not-allowed disabled:no-underline"
             :disabled="isSaving"
             :aria-busy="isSaving"
           >
@@ -221,7 +221,7 @@ const handleSaveDate = async () => {
           <button
             v-if="dateRow.isEditable && !isEditing"
             type="button"
-            class="flex cursor-pointer items-center gap-0.5 text-[12px] max-sm:text-[13px] font-semibold text-primary hover:underline disabled:cursor-not-allowed disabled:no-underline"
+            class="flex items-center gap-0.5 max-sm:-mx-2 max-sm:-my-3 max-sm:px-2 max-sm:py-3 text-[12px] max-sm:text-[14px] font-semibold text-primary cursor-pointer hover:underline disabled:cursor-not-allowed disabled:no-underline"
             :aria-label="`編輯${dateRow.label}日期`"
             :disabled="isTogglingStatus"
             @click="handleStartEditing(dateRow.field)"
@@ -235,7 +235,7 @@ const handleSaveDate = async () => {
     <div v-if="!isEditing" class="mt-5 flex justify-end">
       <button
         type="button"
-        class="cursor-pointer text-[13px] max-sm:text-[14px] font-semibold text-danger hover:underline"
+        class="text-[14px] max-sm:text-base font-semibold text-danger cursor-pointer hover:underline"
         @click="isConfirmingRemove = true"
       >
         從書庫移除
