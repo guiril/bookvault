@@ -15,6 +15,32 @@
 
   --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
   --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --color-text-primary: #1c1b19;
+  --color-text-secondary: #635e56;
+
+  --color-surface-page: #f7f5f0;
+
+  --color-border-subtle: #e2ddd3;
+  --color-border-strong: #1c1b19;
+
+  --color-danger-text: #cc1c1c;
+
+  --color-button-primary-bg: #1c1b19;
+  --color-button-primary-bg-hover: #2e2f31;
+  --color-button-primary-bg-pressed: #0f0f0e;
+  --color-button-primary-text: #f7f5f0;
+  --color-button-disabled-bg: #f0eadd;
+  --color-button-disabled-text: #bdb5a8;
+  --color-button-focus: #1c1b19;
+
+  --color-input-placeholder: #746e66;
+  --color-input-border: #8a847a;
+  --color-input-border-focus: #1c1b19;
+  --color-input-border-error: #e02424;
+
+  --font-sans: 'Noto Sans TC', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Noto Serif TC', ui-serif, serif;
 }
 
 body {
