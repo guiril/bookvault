@@ -41,6 +41,23 @@
 
   --font-sans: 'Noto Sans TC', ui-sans-serif, system-ui, sans-serif;
   --font-serif: 'Noto Serif TC', ui-serif, serif;
+
+  --text-heading-h2: 1.75rem;
+  --text-heading-h2--line-height: 2.5rem;
+  --text-heading-h2--font-weight: 600;
+  --text-heading-h3: 1.5rem;
+  --text-heading-h3--line-height: 2.125rem;
+  --text-heading-h3--font-weight: 600;
+  --text-ui-label: 0.875rem;
+  --text-ui-label--line-height: 1.25rem;
+  --text-ui-label--font-weight: 500;
+  --text-ui-label-lg: 1rem;
+  --text-ui-label-lg--line-height: 1.5rem;
+  --text-ui-label-lg--font-weight: 500;
+}
+
+@utility page-container {
+  @apply max-w-280 box-content mx-auto px-8 max-sm:px-5;
 }
 
 body {

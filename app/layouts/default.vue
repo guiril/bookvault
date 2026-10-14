@@ -8,12 +8,12 @@ const handleLogout = async () => {
 </script>
 
 <template>
-  <div class="flex min-h-screen flex-col bg-bg">
+  <div class="min-h-screen flex flex-col bg-surface-page">
     <header
-      class="sticky top-0 z-40 flex justify-center border-b border-border-subtle bg-surface-page px-8 max-sm:px-5"
+      class="sticky top-0 z-40 border-b border-border-subtle bg-surface-page"
     >
       <div
-        class="flex h-16 max-sm:h-14 w-full max-w-280 items-center justify-between"
+        class="page-container h-16 max-sm:h-14 flex items-center justify-between"
       >
         <NuxtLink to="/my-books">
           <img src="/logo.svg" alt="Bookvault" class="h-10 w-auto" />

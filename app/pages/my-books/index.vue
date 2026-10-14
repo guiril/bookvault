@@ -14,6 +14,8 @@ const togglingBookId = ref<string | null>(null);
 
 const toastRef = useTemplateRef('toastRef');
 
+const hasBooks = computed(() => (userBooks.value ?? []).length > 0);
+
 const tabs = computed(() => {
   const books = userBooks.value ?? [];
 
@@ -22,7 +24,6 @@ const tabs = computed(() => {
       key: 'all' as TabKey,
       label: '全部',
       count: books.length,
-      emptyMessage: '書庫裡還沒有書，點右上角「新增書本」開始記錄',
     },
     {
       key: 'reading' as TabKey,
@@ -123,18 +124,26 @@ const handleToggleStatus = async (userBookId: string) => {
 </script>
 
 <template>
-  <div class="mx-auto max-w-7xl p-10 max-md:p-6">
-    <div class="flex justify-end">
-      <NuxtLink
-        to="/my-books/new"
-        class="px-4 py-2 font-display text-[13px] max-sm:text-base font-semibold rounded-md bg-primary text-white cursor-pointer transition-colors hover:bg-primary-hover"
+  <div class="page-container pt-10 max-sm:pt-6 pb-16">
+    <div class="flex items-center justify-between py-1">
+      <h1
+        class="font-serif text-heading-h2 max-sm:text-heading-h3 text-text-primary"
       >
-        + 新增書本
+        書庫
+      </h1>
+      <NuxtLink
+        v-if="hasBooks"
+        to="/my-books/new"
+        class="h-10 flex items-center gap-2 pr-5 pl-4 font-sans text-ui-label max-sm:text-ui-label-lg rounded-sm bg-button-primary-bg text-button-primary-text outline-offset-2 outline-button-focus transition-colors hover:bg-button-primary-bg-hover focus-visible:outline-2 active:bg-button-primary-bg-pressed"
+      >
+        <img class="size-4 p-0.5" src="/images/icons/add.svg" alt="" />
+        <span>新增一本書</span>
       </NuxtLink>
     </div>
     <TabGroup>
       <TabList
-        class="inline-flex gap-0.5 mt-4.5 max-sm:mt-6 p-0.75 max-sm:p-1 rounded-[9px] border border-line bg-surface"
+        class="flex gap-6 mt-5"
+        :class="{ 'border-b border-border-subtle': hasBooks }"
       >
         <Tab
           v-for="tab in tabs"
@@ -144,10 +153,15 @@ const handleToggleStatus = async (userBookId: string) => {
         >
           <button
             type="button"
-            class="cursor-pointer rounded-md px-3.25 py-1.5 font-display text-[12.5px] max-sm:text-[14px] font-semibold transition-colors focus:outline-none"
-            :class="selected ? 'bg-ink text-white' : 'text-ink-soft'"
+            class="relative flex gap-1 pb-1.5 font-sans text-ui-label-lg cursor-pointer transition-colors hover:text-text-primary focus:outline-none after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-border-strong after:origin-left after:transition-transform"
+            :class="
+              selected
+                ? 'text-text-primary after:scale-x-100'
+                : 'text-text-secondary after:scale-x-0 hover:after:scale-x-100'
+            "
           >
-            {{ tab.label }}（{{ tab.count }}）
+            <span>{{ tab.label }}</span>
+            <span>{{ tab.count }}</span>
           </button>
         </Tab>
       </TabList>
@@ -165,7 +179,39 @@ const handleToggleStatus = async (userBookId: string) => {
               @open-notes="handleOpenNotes"
             />
           </ul>
-          <p v-else class="mt-16 text-center text-sm text-ink-soft">
+          <div
+            v-else-if="tab.key === 'all'"
+            class="flex flex-col items-center gap-10 mt-18 max-sm:mt-12"
+          >
+            <img
+              src="/images/vault-empty.svg"
+              alt=""
+              width="320"
+              height="323"
+              class="max-sm:w-60 max-sm:h-auto"
+            />
+            <div class="w-80 max-sm:w-full flex flex-col items-center gap-6">
+              <div class="flex flex-col gap-1 text-center">
+                <h2 class="font-serif text-heading-h3 text-text-primary">
+                  目前您的書櫃還沒有書
+                </h2>
+                <p class="font-sans text-ui-label-lg text-text-secondary">
+                  點擊新增一本書立即加入手中正在閱讀的書
+                </p>
+              </div>
+              <NuxtLink
+                to="/my-books/new"
+                class="w-full h-12 flex items-center justify-center gap-2 px-5 font-sans text-ui-label-lg rounded-sm bg-button-primary-bg text-button-primary-text outline-offset-2 outline-button-focus transition-colors hover:bg-button-primary-bg-hover focus-visible:outline-2 active:bg-button-primary-bg-pressed"
+              >
+                <img class="size-4 p-0.5" src="/images/icons/add.svg" alt="" />
+                <span>新增一本書</span>
+              </NuxtLink>
+            </div>
+          </div>
+          <p
+            v-else
+            class="mt-16 text-center font-sans text-base leading-6 text-text-secondary"
+          >
             {{ tab.emptyMessage }}
           </p>
         </TabPanel>
