@@ -20,9 +20,11 @@
   --color-text-secondary: #635e56;
 
   --color-surface-page: #f7f5f0;
+  --color-surface-raised: #f0eadd;
 
   --color-border-subtle: #e2ddd3;
   --color-border-strong: #1c1b19;
+  --color-border-cover: #1c1b1924;
 
   --color-danger-text: #cc1c1c;
 
@@ -48,12 +50,18 @@
   --text-heading-h3: 1.5rem;
   --text-heading-h3--line-height: 2.125rem;
   --text-heading-h3--font-weight: 600;
+  --text-heading-h6: 1rem;
+  --text-heading-h6--line-height: 1.5rem;
+  --text-heading-h6--font-weight: 600;
   --text-ui-label: 0.875rem;
   --text-ui-label--line-height: 1.25rem;
   --text-ui-label--font-weight: 500;
   --text-ui-label-lg: 1rem;
   --text-ui-label-lg--line-height: 1.5rem;
   --text-ui-label-lg--font-weight: 500;
+  --text-ui-caption: 0.75rem;
+  --text-ui-caption--line-height: 1.125rem;
+  --text-ui-caption--font-weight: 400;
 }
 
 @utility page-container {

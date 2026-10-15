@@ -25,6 +25,7 @@ const { userBook, isTogglingStatus = false } = defineProps<{
 
 const emit = defineEmits<{
   close: [];
+  'open-notes': [userBookId: string];
   'toggle-status': [userBookId: string];
   removed: [userBookId: string];
   updated: [userBook: UserBook];
@@ -232,7 +233,15 @@ const handleSaveDate = async () => {
         </span>
       </div>
     </form>
-    <div v-if="!isEditing" class="mt-5 flex justify-end">
+    <div v-if="!isEditing" class="flex items-center justify-between mt-5">
+      <button
+        type="button"
+        class="flex items-center gap-1 text-[14px] max-sm:text-base font-semibold text-primary cursor-pointer hover:underline"
+        @click="emit('open-notes', userBook.id)"
+      >
+        <Icon name="material-symbols:edit-note-outline" />
+        查看筆記
+      </button>
       <button
         type="button"
         class="text-[14px] max-sm:text-base font-semibold text-danger cursor-pointer hover:underline"

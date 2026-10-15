@@ -67,6 +67,7 @@ const handleOpenInfo = (userBookId: string) => {
 };
 
 const handleOpenNotes = (userBookId: string) => {
+  selectedInfoBookId.value = null;
   selectedNotesBookId.value = userBookId;
 };
 
@@ -166,17 +167,20 @@ const handleToggleStatus = async (userBookId: string) => {
         </Tab>
       </TabList>
       <TabPanels>
-        <TabPanel v-for="tab in tabs" :key="tab.key">
+        <TabPanel
+          v-for="tab in tabs"
+          :key="tab.key"
+          class="rounded-xs outline-offset-4 outline-button-focus focus-visible:outline-2"
+        >
           <ul
             v-if="booksForTab(tab.key).length > 0"
-            class="mt-5 grid grid-cols-5 gap-5 max-lg:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 max-sm:gap-3.5"
+            class="grid grid-cols-7 max-lg:grid-cols-6 max-md:grid-cols-4 max-sm:grid-cols-2 gap-4 mt-8"
           >
             <UserBookCard
               v-for="userBook in booksForTab(tab.key)"
               :key="userBook.id"
               :user-book="userBook"
               @open-info="handleOpenInfo"
-              @open-notes="handleOpenNotes"
             />
           </ul>
           <div
@@ -222,6 +226,7 @@ const handleToggleStatus = async (userBookId: string) => {
       :user-book="selectedInfoBook"
       :is-toggling-status="togglingBookId === selectedInfoBook.id"
       @close="selectedInfoBookId = null"
+      @open-notes="handleOpenNotes"
       @toggle-status="handleToggleStatus"
       @removed="handleBookRemoved"
       @updated="handleBookUpdated"
