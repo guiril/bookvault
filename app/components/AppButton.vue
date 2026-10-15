@@ -12,10 +12,14 @@ const {
   to,
   size = 'lg',
   type = 'button',
+  isLoading = false,
+  disabled = false,
 } = defineProps<{
   to?: RouteLocationRaw;
   size?: ButtonSize;
   type?: 'button' | 'submit';
+  isLoading?: boolean;
+  disabled?: boolean;
 }>();
 </script>
 
@@ -31,9 +35,12 @@ const {
   <button
     v-else
     :type="type"
-    class="flex items-center justify-center gap-2 font-sans rounded-sm bg-button-primary-bg text-button-primary-text outline-offset-2 outline-button-focus cursor-pointer transition-colors hover:bg-button-primary-bg-hover focus-visible:outline-2 active:bg-button-primary-bg-pressed"
+    :disabled="disabled"
+    :aria-busy="isLoading"
+    class="flex items-center justify-center gap-2 font-sans rounded-sm bg-button-primary-bg text-button-primary-text outline-offset-2 outline-button-focus cursor-pointer transition-colors enabled:hover:bg-button-primary-bg-hover focus-visible:outline-2 enabled:active:bg-button-primary-bg-pressed disabled:bg-button-disabled-bg disabled:text-button-disabled-text disabled:cursor-not-allowed"
     :class="sizeClasses[size]"
   >
+    <AppSpinner v-if="isLoading" size="sm" />
     <slot />
   </button>
 </template>
