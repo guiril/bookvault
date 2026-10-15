@@ -132,14 +132,10 @@ const handleToggleStatus = async (userBookId: string) => {
       >
         書庫
       </h1>
-      <NuxtLink
-        v-if="hasBooks"
-        to="/my-books/new"
-        class="h-10 flex items-center gap-2 pr-5 pl-4 font-sans text-ui-label max-sm:text-ui-label-lg rounded-sm bg-button-primary-bg text-button-primary-text outline-offset-2 outline-button-focus transition-colors hover:bg-button-primary-bg-hover focus-visible:outline-2 active:bg-button-primary-bg-pressed"
-      >
+      <AppButton v-if="hasBooks" to="/my-books/new" size="md" class="pr-5!">
         <img class="size-4 p-0.5" src="/images/icons/add.svg" alt="" />
         <span>新增一本書</span>
-      </NuxtLink>
+      </AppButton>
     </div>
     <TabGroup>
       <TabList
@@ -203,13 +199,10 @@ const handleToggleStatus = async (userBookId: string) => {
                   點擊新增一本書立即加入手中正在閱讀的書
                 </p>
               </div>
-              <NuxtLink
-                to="/my-books/new"
-                class="w-full h-12 flex items-center justify-center gap-2 px-5 font-sans text-ui-label-lg rounded-sm bg-button-primary-bg text-button-primary-text outline-offset-2 outline-button-focus transition-colors hover:bg-button-primary-bg-hover focus-visible:outline-2 active:bg-button-primary-bg-pressed"
-              >
+              <AppButton to="/my-books/new" class="w-full">
                 <img class="size-4 p-0.5" src="/images/icons/add.svg" alt="" />
                 <span>新增一本書</span>
-              </NuxtLink>
+              </AppButton>
             </div>
           </div>
           <p
