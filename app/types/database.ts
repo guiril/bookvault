@@ -22,7 +22,15 @@ export interface UserBook extends BookDetails {
 
 export interface Note {
   id: string;
-  user_book_id: string;
-  content: string;
+  user_id: string;
+  // Null means the note is uncategorized.
+  user_book_id: string | null;
+  // Legacy single-field note, moved into `thought` when redesign is merged
+  // into main.
+  content: string | null;
+  excerpt: string | null;
+  page: number | null;
+  thought: string | null;
   created_at: string;
+  updated_at: string;
 }

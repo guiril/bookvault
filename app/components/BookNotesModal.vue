@@ -48,7 +48,7 @@ const handleAddNote = async () => {
       method: 'POST',
       body: {
         user_book_id: userBook.id,
-        content: draftContent.value,
+        thought: draftContent.value,
       },
     });
 
@@ -141,7 +141,7 @@ const handleConfirmDelete = async () => {
           <p
             class="text-[14px] max-sm:text-base leading-[1.55] wrap-break-word whitespace-pre-wrap"
           >
-            {{ note.content }}
+            {{ note.excerpt ?? note.thought ?? note.content }}
           </p>
           <time
             :datetime="note.created_at"

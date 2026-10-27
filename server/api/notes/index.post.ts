@@ -1,8 +1,7 @@
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server';
 
-interface CreateNoteBody {
-  user_book_id: string;
-  content: string;
+interface CreateNoteBody extends NoteFieldsBody {
+  user_book_id?: string | null;
 }
 
 export default defineEventHandler(async (event) => {
@@ -17,29 +16,25 @@ export default defineEventHandler(async (event) => {
 
   const body = await readBody<CreateNoteBody>(event);
 
-  if (typeof body.user_book_id !== 'string' || !body.user_book_id) {
+  // Leaving the book out saves the note as uncategorized.
+  const userBookId = body.user_book_id ?? null;
+
+  if (userBookId !== null && (typeof userBookId !== 'string' || !userBookId)) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Missing user book id',
+      statusMessage: 'Invalid user book id',
     });
   }
 
-  const content = typeof body.content === 'string' ? body.content.trim() : '';
-
-  if (!content) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Missing note content',
-    });
-  }
+  const noteFields = parseNoteFields(body);
 
   const supabase = await serverSupabaseClient(event);
 
   const { data, error } = await supabase
     .from('notes')
     .insert({
-      user_book_id: body.user_book_id,
-      content,
+      user_book_id: userBookId,
+      ...noteFields,
     })
     .select()
     .single();
