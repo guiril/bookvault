@@ -35,7 +35,7 @@ export interface Database {
           author?: string;
           cover_url?: string | null;
           description?: string | null;
-          status: UserBookStatus;
+          status?: UserBookStatus;
           started_at?: string | null;
           finished_at?: string | null;
           created_at?: string;
@@ -60,21 +60,36 @@ export interface Database {
       notes: {
         Row: {
           id: string;
-          user_book_id: string;
-          content: string;
+          user_id: string;
+          user_book_id: string | null;
+          content: string | null;
+          excerpt: string | null;
+          page: number | null;
+          thought: string | null;
           created_at: string;
+          updated_at: string;
         };
         Insert: {
           id?: string;
-          user_book_id: string;
-          content: string;
+          user_id?: string;
+          user_book_id?: string | null;
+          content?: string | null;
+          excerpt?: string | null;
+          page?: number | null;
+          thought?: string | null;
           created_at?: string;
+          updated_at?: string;
         };
         Update: {
           id?: string;
-          user_book_id?: string;
-          content?: string;
+          user_id?: string;
+          user_book_id?: string | null;
+          content?: string | null;
+          excerpt?: string | null;
+          page?: number | null;
+          thought?: string | null;
           created_at?: string;
+          updated_at?: string;
         };
         Relationships: [
           {
