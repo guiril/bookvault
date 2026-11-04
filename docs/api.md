@@ -7,6 +7,7 @@
 | GET    | `/api/books/search`         | 搜尋 Google Books    |
 | GET    | `/api/user-books`           | 取得書庫所有書       |
 | POST   | `/api/user-books`           | 新增一本書           |
+| GET    | `/api/user-books/:id`       | 取得一本書和它的筆記 |
 | PATCH  | `/api/user-books/:id`       | 更新閱讀狀態         |
 | DELETE | `/api/user-books/:id`       | 從書庫移除一本書     |
 | GET    | `/api/user-books/:id/notes` | 取得一本書的筆記     |
@@ -79,7 +80,15 @@ interface Note {
 
 ### `GET /api/user-books`
 
-**回傳：** `UserBook[]`，依 `created_at` 由新到舊。
+**回傳：** 書的陣列，依 `created_at` 由新到舊。每筆是 `UserBook` 加上 `note_count: number`，沒有筆記時是 `0`。
+
+### `GET /api/user-books/:id`
+
+**回傳：** `UserBook` 加上 `notes: Note[]`，筆記依 `created_at` 由新到舊，沒有筆記時是空陣列。
+
+| 狀態 | 訊息                  | 情況                 |
+| ---- | --------------------- | -------------------- |
+| 404  | `User book not found` | 書不存在，或屬於別人 |
 
 ### `POST /api/user-books`
 

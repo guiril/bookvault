@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
 
   const { data, error } = await supabase
     .from('user_books')
-    .select()
+    .select('*, notes(count)')
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -24,5 +24,9 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  return data;
+  // Supabase wraps the count as `notes: [{ count }]`.
+  return data.map(({ notes, ...userBook }) => ({
+    ...userBook,
+    note_count: notes[0]?.count ?? 0,
+  }));
 });
