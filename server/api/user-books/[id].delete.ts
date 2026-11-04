@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
 
   // RLS silently skips rows the user can't delete instead of erroring, so
   // `.select().single()` is what tells us whether a row was actually deleted.
-  // The book's notes are removed by the `on delete cascade` on notes.
+  // The book's notes become uncategorized through `on delete set null`.
   const { error } = await supabase
     .from('user_books')
     .delete()
