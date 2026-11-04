@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
   // Leaving the book out saves the note as uncategorized.
   const userBookId = body.user_book_id ?? null;
 
-  if (userBookId !== null && (typeof userBookId !== 'string' || !userBookId)) {
+  if (userBookId !== null && !isUuid(userBookId)) {
     throw createError({
       statusCode: 400,
       statusMessage: 'Invalid user book id',

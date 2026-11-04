@@ -27,6 +27,13 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  if (!isUuid(userBookId)) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'User book not found',
+    });
+  }
+
   const body = await readBody<UpdateUserBookBody>(event);
 
   if (body.status !== 'reading' && body.status !== 'finished') {

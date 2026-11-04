@@ -21,7 +21,7 @@
 
 - 所有 API 都要登入，未登入回 `401 Unauthorized`。
 - 錯誤回應的訊息放在 `statusMessage`。
-- 資料不存在、或資料屬於別人，一律回 `404`，避免洩漏資料是否存在。
+- 資料不存在、資料屬於別人，或網址裡的 id 不是 UUID 格式，一律回 `404`，避免洩漏資料是否存在。
 - 資料表操作失敗回 `500`，訊息依 API 而異，下方不逐一列出。
 
 ## 資料型別
@@ -191,10 +191,10 @@ user_book: {
 
 除了內容規則的錯誤，還有：
 
-| 狀態 | 訊息                   | 情況                                |
-| ---- | ---------------------- | ----------------------------------- |
-| 400  | `Invalid user book id` | `user_book_id` 不是字串，或是空字串 |
-| 404  | `User book not found`  | 書不存在，或屬於別人                |
+| 狀態 | 訊息                   | 情況                          |
+| ---- | ---------------------- | ----------------------------- |
+| 400  | `Invalid user book id` | `user_book_id` 不是 UUID 格式 |
+| 404  | `User book not found`  | 書不存在，或屬於別人          |
 
 ### `GET /api/notes/:id`
 
@@ -219,12 +219,12 @@ user_book: {
 
 除了內容規則的錯誤，還有：
 
-| 狀態 | 訊息                   | 情況                                      |
-| ---- | ---------------------- | ----------------------------------------- |
-| 400  | `Invalid user book id` | `user_book_id` 沒傳、不是字串，或是空字串 |
-| 400  | `Missing note fields`  | `excerpt`、`page`、`thought` 有漏傳       |
-| 404  | `Note not found`       | 筆記不存在，或屬於別人                    |
-| 404  | `User book not found`  | 要換到的書不存在，或屬於別人              |
+| 狀態 | 訊息                   | 情況                                  |
+| ---- | ---------------------- | ------------------------------------- |
+| 400  | `Invalid user book id` | `user_book_id` 沒傳，或不是 UUID 格式 |
+| 400  | `Missing note fields`  | `excerpt`、`page`、`thought` 有漏傳   |
+| 404  | `Note not found`       | 筆記不存在，或屬於別人                |
+| 404  | `User book not found`  | 要換到的書不存在，或屬於別人          |
 
 ### `DELETE /api/notes/:id`
 

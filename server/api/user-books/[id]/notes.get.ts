@@ -19,6 +19,13 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  if (!isUuid(userBookId)) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'User book not found',
+    });
+  }
+
   const supabase = await serverSupabaseClient(event);
 
   // Querying notes directly would return an empty array both for a book with

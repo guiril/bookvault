@@ -25,12 +25,16 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  if (!isUuid(noteId)) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Note not found',
+    });
+  }
+
   const body = await readBody<UpdateNoteBody>(event);
 
-  if (
-    body.user_book_id !== null &&
-    (typeof body.user_book_id !== 'string' || !body.user_book_id)
-  ) {
+  if (body.user_book_id !== null && !isUuid(body.user_book_id)) {
     throw createError({
       statusCode: 400,
       statusMessage: 'Invalid user book id',

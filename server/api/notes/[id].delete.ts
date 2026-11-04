@@ -19,6 +19,13 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  if (!isUuid(noteId)) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Note not found',
+    });
+  }
+
   const supabase = await serverSupabaseClient(event);
 
   // RLS silently skips rows the user can't delete instead of erroring, so
