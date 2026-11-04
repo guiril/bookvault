@@ -37,6 +37,18 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  // A missing field would otherwise be saved as null, erasing its current value.
+  if (
+    body.excerpt === undefined ||
+    body.page === undefined ||
+    body.thought === undefined
+  ) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Missing note fields',
+    });
+  }
+
   const noteFields = parseNoteFields(body);
 
   const supabase = await serverSupabaseClient(event);

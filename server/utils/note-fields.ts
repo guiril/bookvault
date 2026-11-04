@@ -7,13 +7,10 @@ export interface NoteFieldsBody {
   thought?: unknown;
 }
 
-const toOptionalText = (value: unknown) => {
-  if (typeof value !== 'string') return null;
+const isOptionalText = (value: unknown): value is string | null | undefined =>
+  value === undefined || value === null || typeof value === 'string';
 
-  const trimmedText = value.trim();
-
-  return trimmedText === '' ? null : trimmedText;
-};
+const trimToNull = (value: string | null | undefined) => value?.trim() || null;
 
 const isValidPage = (value: unknown): value is number =>
   Number.isInteger(value) && Number(value) >= 1 && Number(value) <= MAX_PAGE;
@@ -21,8 +18,15 @@ const isValidPage = (value: unknown): value is number =>
 // Shared by create and update so both enforce the same rules as the
 // `notes_has_text` and `notes_page_needs_excerpt` checks in schema.sql.
 export const parseNoteFields = (body: NoteFieldsBody) => {
-  const excerpt = toOptionalText(body.excerpt);
-  const thought = toOptionalText(body.thought);
+  if (!isOptionalText(body.excerpt) || !isOptionalText(body.thought)) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Invalid note text',
+    });
+  }
+
+  const excerpt = trimToNull(body.excerpt);
+  const thought = trimToNull(body.thought);
   const page = isValidPage(body.page) ? body.page : null;
 
   if (!excerpt && !thought) {
