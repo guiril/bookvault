@@ -7,7 +7,10 @@
 // truth) — keep the two in sync manually when the schema changes. Every
 // table needs a `Relationships` entry (even if empty) or it fails to
 // structurally match `GenericTable` and query types collapse to `never`.
-import type { UserBookStatus } from './database';
+
+// `status` and the date columns are legacy and dropped when redesign is
+// merged into main.
+type UserBookStatus = 'reading' | 'finished';
 
 export interface Database {
   public: {

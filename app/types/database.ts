@@ -1,5 +1,3 @@
-export type UserBookStatus = 'reading' | 'finished';
-
 // Nullable fields use `| null` instead of `?` because the database has no
 // `undefined`, only `NULL`.
 export interface BookDetails {
@@ -13,11 +11,12 @@ export interface BookDetails {
 export interface UserBook extends BookDetails {
   id: string;
   user_id: string;
-  status: UserBookStatus;
-  started_at: string | null;
-  finished_at: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface UserBookWithNoteCount extends UserBook {
+  note_count: number;
 }
 
 export interface Note {

@@ -8,7 +8,6 @@
 | GET    | `/api/user-books`           | 取得書庫所有書       |
 | POST   | `/api/user-books`           | 新增一本書           |
 | GET    | `/api/user-books/:id`       | 取得一本書和它的筆記 |
-| PATCH  | `/api/user-books/:id`       | 更新閱讀狀態         |
 | DELETE | `/api/user-books/:id`       | 從書庫移除一本書     |
 | GET    | `/api/user-books/:id/notes` | 取得一本書的筆記     |
 | GET    | `/api/notes`                | 取得全部筆記         |
@@ -34,6 +33,8 @@
 
 定義在 `app/types/database.ts`。
 
+書的 API 目前還會回傳 `status`、`started_at`、`finished_at` 三個舊欄位，前端不要使用，之後會從資料表刪除。
+
 ```ts
 interface BookDetails {
   google_books_id: string | null;
@@ -46,9 +47,6 @@ interface BookDetails {
 interface UserBook extends BookDetails {
   id: string;
   user_id: string;
-  status: 'reading' | 'finished';
-  started_at: string | null; // YYYY-MM-DD
-  finished_at: string | null; // YYYY-MM-DD
   created_at: string;
   updated_at: string;
 }
@@ -113,23 +111,6 @@ interface Note {
 | 400  | `Missing title`           | 沒有 `title`，或只有空白  |
 | 400  | `Invalid book fields`     | 選填欄位不是字串或 `null` |
 | 409  | `Book already in library` | 這本書已經在書庫裡        |
-
-### `PATCH /api/user-books/:id`
-
-| 欄位          | 型別                      | 必填 | 說明                                            |
-| ------------- | ------------------------- | ---- | ----------------------------------------------- |
-| `status`      | `'reading' \| 'finished'` | 是   |                                                 |
-| `started_at`  | string \| null            | 否   | 沒傳就維持原值                                  |
-| `finished_at` | string \| null            | 否   | `finished` 時沒給就用今天；`reading` 時一律清空 |
-
-**回傳：** 更新後的 `UserBook`。
-
-| 狀態 | 訊息                                 | 情況                       |
-| ---- | ------------------------------------ | -------------------------- |
-| 400  | `Invalid status`                     | `status` 不是允許的值      |
-| 400  | `Invalid date`                       | 日期格式錯誤，或日期不存在 |
-| 400  | `Finished date is before start date` | 讀完日期早於開始日期       |
-| 404  | `User book not found`                | 書不存在，或屬於別人       |
 
 ### `DELETE /api/user-books/:id`
 
