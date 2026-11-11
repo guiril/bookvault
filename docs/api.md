@@ -24,6 +24,12 @@
 - 資料不存在、資料屬於別人，或網址裡的 id 不是 UUID 格式，一律回 `404`，避免洩漏資料是否存在。
 - 資料表操作失敗回 `500`，訊息依 API 而異，下方不逐一列出。
 
+### 欄位的值
+
+- 文字欄位會去掉前後空白。
+- 新增時，選填欄位可以不傳，也可以傳 `null`；只有空白時也當作沒填。
+- 更新時，要清空欄位就傳 `null`。
+
 ## 資料型別
 
 定義在 `app/types/database.ts`。
@@ -92,25 +98,21 @@ interface Note {
 
 ### `POST /api/user-books`
 
-| 欄位              | 型別                      | 必填 | 說明                                                       |
-| ----------------- | ------------------------- | ---- | ---------------------------------------------------------- |
-| `title`           | string                    | 是   | API 目前沒有驗證，由資料庫的 `not null` 擋下，缺少時回 500 |
-| `author`          | string                    | 否   | 預設空字串                                                 |
-| `google_books_id` | string                    | 否   | 同一個使用者不能重複                                       |
-| `cover_url`       | string                    | 否   |                                                            |
-| `description`     | string                    | 否   |                                                            |
-| `status`          | `'reading' \| 'finished'` | 是   |                                                            |
-| `started_at`      | string \| null            | 否   | `YYYY-MM-DD`                                               |
-| `finished_at`     | string \| null            | 否   | `YYYY-MM-DD`，只有 `finished` 時才會存                     |
+| 欄位              | 型別           | 必填 | 說明                                  |
+| ----------------- | -------------- | ---- | ------------------------------------- |
+| `title`           | string         | 是   | 不能只有空白                          |
+| `author`          | string \| null | 否   | 沒填時存空字串                        |
+| `google_books_id` | string \| null | 否   | 沒填時存 `null`；同一個使用者不能重複 |
+| `cover_url`       | string \| null | 否   | 沒填時存 `null`                       |
+| `description`     | string \| null | 否   | 沒填時存 `null`                       |
 
 **回傳：** 新增的 `UserBook`。
 
-| 狀態 | 訊息                                 | 情況                       |
-| ---- | ------------------------------------ | -------------------------- |
-| 400  | `Invalid status`                     | `status` 不是允許的值      |
-| 400  | `Invalid date`                       | 日期格式錯誤，或日期不存在 |
-| 400  | `Finished date is before start date` | 讀完日期早於開始日期       |
-| 409  | `Book already in library`            | 這本書已經在書庫裡         |
+| 狀態 | 訊息                      | 情況                      |
+| ---- | ------------------------- | ------------------------- |
+| 400  | `Missing title`           | 沒有 `title`，或只有空白  |
+| 400  | `Invalid book fields`     | 選填欄位不是字串或 `null` |
+| 409  | `Book already in library` | 這本書已經在書庫裡        |
 
 ### `PATCH /api/user-books/:id`
 

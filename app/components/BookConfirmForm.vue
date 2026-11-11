@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import type { UserBookStatus } from '~/types/database';
-
 export interface BookFormValues {
   title: string;
   author: string;
   cover_url: string;
   description: string;
-  status: UserBookStatus;
-  started_at: string;
-  finished_at: string;
 }
 
 const { isSubmitting = false } = defineProps<{
@@ -23,15 +18,6 @@ const emit = defineEmits<{
   submit: [];
   reset: [];
 }>();
-
-watch(
-  () => formValues.value.status,
-  (status) => {
-    if (status === 'finished' && !formValues.value.finished_at) {
-      formValues.value.finished_at = getLocalTodayDateString();
-    }
-  },
-);
 </script>
 
 <template>
@@ -72,53 +58,6 @@ watch(
         id="description"
         v-model="formValues.description"
         rows="4"
-        class="rounded-md border border-line px-3 py-2 text-ink focus:border-primary focus:outline-none"
-      />
-    </div>
-    <div class="flex flex-col gap-2">
-      <span class="text-sm font-medium text-ink">閱讀狀態</span>
-      <div class="flex gap-4">
-        <label class="flex cursor-pointer items-center gap-2 text-sm text-ink">
-          <input
-            v-model="formValues.status"
-            type="radio"
-            name="status"
-            value="reading"
-          />
-          閱讀中
-        </label>
-        <label class="flex cursor-pointer items-center gap-2 text-sm text-ink">
-          <input
-            v-model="formValues.status"
-            type="radio"
-            name="status"
-            value="finished"
-          />
-          已讀完
-        </label>
-      </div>
-    </div>
-    <div class="flex flex-col gap-1">
-      <label for="started_at" class="text-sm font-medium text-ink">
-        開始日期
-      </label>
-      <input
-        id="started_at"
-        v-model="formValues.started_at"
-        type="date"
-        class="rounded-md border border-line px-3 py-2 text-ink focus:border-primary focus:outline-none"
-      />
-    </div>
-    <div v-if="formValues.status === 'finished'" class="flex flex-col gap-1">
-      <label for="finished_at" class="text-sm font-medium text-ink">
-        完成日期
-      </label>
-      <input
-        id="finished_at"
-        v-model="formValues.finished_at"
-        type="date"
-        :min="formValues.started_at || undefined"
-        required
         class="rounded-md border border-line px-3 py-2 text-ink focus:border-primary focus:outline-none"
       />
     </div>

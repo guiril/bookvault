@@ -1,17 +1,24 @@
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server';
 
-import type { UserBookStatus } from '~/types/database';
-
 interface CreateUserBookBody {
-  google_books_id?: string;
-  title: string;
-  author: string;
-  cover_url?: string;
-  description?: string;
-  status: UserBookStatus;
-  started_at?: string | null;
-  finished_at?: string | null;
+  google_books_id?: unknown;
+  title?: unknown;
+  author?: unknown;
+  cover_url?: unknown;
+  description?: unknown;
 }
+
+// Optional fields may be left out or null, but must be strings when present.
+// Blank strings are stored as null.
+const readOptionalText = (value: unknown) => {
+  if (value === undefined || value === null) return null;
+  if (typeof value === 'string') return value.trim() || null;
+
+  throw createError({
+    statusCode: 400,
+    statusMessage: 'Invalid book fields',
+  });
+};
 
 export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event);
@@ -24,20 +31,20 @@ export default defineEventHandler(async (event) => {
   }
 
   const body = await readBody<CreateUserBookBody>(event);
+  const title = typeof body.title === 'string' ? body.title.trim() : '';
 
-  if (body.status !== 'reading' && body.status !== 'finished') {
+  if (!title) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Invalid status',
+      statusMessage: 'Missing title',
     });
   }
 
-  if (!isOptionalDate(body.started_at) || !isOptionalDate(body.finished_at)) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Invalid date',
-    });
-  }
+  const googleBooksId = readOptionalText(body.google_books_id);
+  // `author` is `not null default ''` in schema.sql.
+  const author = readOptionalText(body.author) ?? '';
+  const coverUrl = readOptionalText(body.cover_url);
+  const description = readOptionalText(body.description);
 
   const supabase = await serverSupabaseClient(event);
 
@@ -46,14 +53,11 @@ export default defineEventHandler(async (event) => {
     .insert({
       // serverSupabaseUser returns the raw JWT payload; the user id is `sub`.
       user_id: user.sub,
-      google_books_id: body.google_books_id,
-      title: body.title,
-      author: body.author,
-      cover_url: body.cover_url,
-      description: body.description,
-      status: body.status,
-      started_at: body.started_at,
-      finished_at: body.status === 'finished' ? body.finished_at : null,
+      google_books_id: googleBooksId,
+      title,
+      author,
+      cover_url: coverUrl,
+      description,
     })
     .select()
     .single();
@@ -62,13 +66,6 @@ export default defineEventHandler(async (event) => {
     throw createError({
       statusCode: 409,
       statusMessage: 'Book already in library',
-    });
-  }
-
-  if (insertUserBookError?.code === SUPABASE_ERROR_CODE.CHECK_VIOLATION) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Finished date is before start date',
     });
   }
 

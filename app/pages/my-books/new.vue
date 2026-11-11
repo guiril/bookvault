@@ -7,9 +7,6 @@ const createBlankBookForm = (): BookFormValues => ({
   author: '',
   cover_url: '',
   description: '',
-  status: 'reading',
-  started_at: '',
-  finished_at: '',
 });
 
 const bookForm = ref<BookFormValues>(createBlankBookForm());
@@ -56,9 +53,6 @@ const selectBook = (book: BookDetails) => {
     author: book.author,
     cover_url: book.cover_url ?? '',
     description: book.description ?? '',
-    status: 'reading',
-    started_at: '',
-    finished_at: '',
   };
 
   toastRef.value?.show('已帶入搜尋結果的資料');
@@ -80,14 +74,8 @@ const handleFormSubmit = async () => {
         google_books_id: selectedGoogleBooksId.value ?? undefined,
         title: bookForm.value.title,
         author: bookForm.value.author,
-        cover_url: bookForm.value.cover_url || undefined,
-        description: bookForm.value.description || undefined,
-        status: bookForm.value.status,
-        started_at: bookForm.value.started_at || undefined,
-        finished_at:
-          bookForm.value.status === 'finished'
-            ? bookForm.value.finished_at || undefined
-            : undefined,
+        cover_url: bookForm.value.cover_url,
+        description: bookForm.value.description,
       },
     });
 
